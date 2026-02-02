@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class CreateAccount extends AppCompatActivity {
 
@@ -60,10 +61,22 @@ public class CreateAccount extends AppCompatActivity {
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
         String name = nameUser.getText().toString().trim();
 
-        if (name.isEmpty()) return;
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) return;
-        if (password.length() < 6) return;
-        if (!password.equals(confirmPassword)) return;
+        if (name.isEmpty()) {
+            nameUser.setError("Enter name");
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Enter valid email");
+            return;
+        }
+        if (password.length() < 6) {
+            passwordEditText.setError("Password must be 6+ chars");
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            confirmPasswordEditText.setError("Passwords do not match");
+            return;
+        }
 
         // 🔥 ROLE SELECTION
         String role;
@@ -82,20 +95,34 @@ public class CreateAccount extends AppCompatActivity {
 
                     FirebaseUser user = fAuth.getCurrentUser();
 
+                    // ✅ Generate Unique ID here
+                    String uniqueId = UUID.randomUUID().toString();
+
                     Map<String, Object> userInfo = new HashMap<>();
                     userInfo.put("FullName", name);
                     userInfo.put("UserEmail", email);
-                    userInfo.put("role", role);   // 🔑 IMPORTANT
+                    userInfo.put("role", role);
+                    userInfo.put("uniqueId", uniqueId); // save unique ID
 
                     fStore.collection("User")
                             .document(user.getUid())
-                            .set(userInfo);
+                            .set(userInfo)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(this, "Account created. Your ID: " + uniqueId, Toast.LENGTH_LONG).show();
+                                changeInProgress(false);
+                                startActivity(new Intent(this, LoginActivity.class));
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "Error saving data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                changeInProgress(false);
+                            });
 
-                    changeInProgress(false);
-                    startActivity(new Intent(this, LoginActivity.class));
-                    finish();
                 })
-                .addOnFailureListener(e -> changeInProgress(false));
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    changeInProgress(false);
+                });
     }
 
     private void changeInProgress(boolean inProgress) {

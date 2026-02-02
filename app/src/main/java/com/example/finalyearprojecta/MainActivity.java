@@ -98,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, View_Report.class));
 
         }else if(id ==R.id.option_layout_2){
-            startActivity(new Intent(this, Upload_Report.class));
+            Intent intent = new Intent(MainActivity.this, Upload_Report.class);
+            intent.putExtra("role", getIntent().getStringExtra("role"));
+            startActivity(intent);
 
         } else if (id == R.id.btn_loout) {
             logout(v);

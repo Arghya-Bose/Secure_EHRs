@@ -28,11 +28,20 @@ public class LoginActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        // ✅ AUTO LOGIN CHECK
         if (fAuth.getCurrentUser() != null) {
-            goToMainActivity();
+            String uid = fAuth.getCurrentUser().getUid();
+            fStore.collection("User").document(uid).get()
+                    .addOnSuccessListener(doc -> {
+                        String role = doc.getString("role");
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.putExtra("role", role);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    });
             return;
         }
+
 
         emailEditText = findViewById(R.id.edit_email_text);
         passwordEditText = findViewById(R.id.edit_password_text);
