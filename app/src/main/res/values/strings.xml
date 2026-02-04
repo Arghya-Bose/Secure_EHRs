@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">FinalyearProjectA</string>
+    <string name="app_name">HealthLock</string>
+    <string name="view_your_report">View Your Report</string>
+    <string name="upload_report">Upload Report</string>
 </resources>

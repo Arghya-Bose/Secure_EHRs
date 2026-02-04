@@ -5,8 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,13 +22,13 @@ import java.util.List;
 public class View_Report extends AppCompatActivity {
 
     EditText patientUniqueIdEditText;
-    Button fetchBtn;
+    ImageView fetchBtn;
     RecyclerView recyclerView;
-
+    ImageButton backBtn;
+    LinearLayout searchLayout;
     FirebaseAuth auth;
     FirebaseFirestore db;
 
-    String role;
     String currentUserId;
 
     List<DocumentModel> documents;
@@ -36,37 +39,37 @@ public class View_Report extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_report);
 
+        // ===== UI =====
         patientUniqueIdEditText = findViewById(R.id.patientUniqueIdEditText);
         fetchBtn = findViewById(R.id.fetchBtn);
         recyclerView = findViewById(R.id.recyclerView);
+        backBtn = findViewById(R.id.btn_back_view);
+        searchLayout = findViewById(R.id.search_layout);
 
+        // ===== FIREBASE =====
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
         currentUserId = auth.getUid();
-        role = getIntent().getStringExtra("role");
 
+        // ===== RECYCLER =====
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         documents = new ArrayList<>();
         adapter = new DocumentAdapter(documents);
         recyclerView.setAdapter(adapter);
 
-        // Patient sees own documents automatically
-        if("patient".equals(role)){
-            patientUniqueIdEditText.setVisibility(EditText.GONE);
-            db.collection("User").document(currentUserId)
-                    .get()
-                    .addOnSuccessListener(doc -> {
-                        String uniqueId = doc.getString("uniqueId");
-                        fetchDocuments(uniqueId);
-                    });
-        }
+        backBtn.setOnClickListener(v -> finish());
 
-        // Doctor/Lab fetch button
+        if (currentUserId == null) return;
+
+        // ===== LOAD USER ROLE FROM FIRESTORE =====
+        loadUserRoleAndData();
+
+        // ===== DOCTOR / LAB SEARCH =====
         fetchBtn.setOnClickListener(v -> {
             String patientUniqueId = patientUniqueIdEditText.getText().toString().trim();
-            if(patientUniqueId.isEmpty()){
-                patientUniqueIdEditText.setError("Enter patient Unique ID");
+
+            if (patientUniqueId.isEmpty()) {
+                patientUniqueIdEditText.setError("Enter patient UID");
                 return;
             }
 
@@ -74,19 +77,57 @@ public class View_Report extends AppCompatActivity {
                     .whereEqualTo("uniqueId", patientUniqueId)
                     .get()
                     .addOnSuccessListener(query -> {
-                        if(!query.isEmpty()){
-                            String uniqueId = query.getDocuments().get(0).getString("uniqueId");
-                            fetchDocuments(uniqueId);
+                        if (!query.isEmpty()) {
+                            fetchDocuments(patientUniqueId);
                         } else {
-                            Toast.makeText(this,"Invalid Unique ID",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Invalid Patient UID", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(this,"Error fetching patient data",Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Error fetching patient", Toast.LENGTH_SHORT).show()
+                    );
         });
     }
 
-    private void fetchDocuments(String patientUniqueId){
+    // ================= LOAD ROLE =================
+    private void loadUserRoleAndData() {
+        db.collection("User")
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (!doc.exists()) return;
+
+                    String role = doc.getString("role");
+                    String uniqueId = doc.getString("uniqueId");
+
+                    // ===== PATIENT =====
+                    if ("patient".equalsIgnoreCase(role)) {
+
+                        patientUniqueIdEditText.setVisibility(View.GONE);
+                        fetchBtn.setVisibility(View.GONE);
+                        searchLayout.setVisibility(View.GONE);
+
+                        if (uniqueId != null && !uniqueId.isEmpty()) {
+                            fetchDocuments(uniqueId); // ✅ AUTO LOAD
+                        } else {
+                            Toast.makeText(this, "Unique ID missing", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        // ===== DOCTOR / LAB =====
+                        patientUniqueIdEditText.setVisibility(View.VISIBLE);
+                        fetchBtn.setVisibility(View.VISIBLE);
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to load user data", Toast.LENGTH_SHORT).show()
+                );
+    }
+
+    // ================= FETCH DOCUMENTS =================
+    private void fetchDocuments(String patientUniqueId) {
         documents.clear();
+        adapter.notifyDataSetChanged();
 
         db.collection("patients")
                 .document(patientUniqueId)
@@ -94,16 +135,19 @@ public class View_Report extends AppCompatActivity {
                 .orderBy("timestamp")
                 .get()
                 .addOnSuccessListener(query -> {
-                    for(QueryDocumentSnapshot doc: query){
-                        String fileName = doc.getString("fileName");
-                        String uploadedBy = doc.getString("uploadedBy");
-                        String roleUploaded = doc.getString("role");
-                        String fileData = doc.getString("fileData");
-
-                        documents.add(new DocumentModel(fileName, uploadedBy, roleUploaded, fileData));
+                    for (QueryDocumentSnapshot doc : query) {
+                        documents.add(new DocumentModel(
+                                doc.getString("fileName"),
+                                doc.getString("uploadedBy"),
+                                doc.getString("role"),
+                                doc.getString("fileData"),
+                                doc.getString("feedback")
+                        ));
                     }
                     adapter.notifyDataSetChanged();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this,"Failed: "+e.getMessage(),Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to load documents", Toast.LENGTH_SHORT).show()
+                );
     }
 }

@@ -1,22 +1,75 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fileCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp"
-    android:background="#EEEEEE"
-    android:layout_marginBottom="8dp">
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="13dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#E3F2FD"
+    app:rippleColor="#1E88E5">
 
-    <TextView
-        android:id="@+id/fileNameText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="File Name"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:padding="14dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/uploadedByText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uploaded By"/>
-</LinearLayout>
+        <!-- File Icon -->
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_file"
+            android:tint="#43A047" />
+
+        <!-- Text -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fileNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blood_Test_Report.pdf"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1F2933" />
+
+            <TextView
+                android:id="@+id/uploadedByText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Uploaded by Dr. Sharma"
+                android:textSize="13sp"
+                android:textColor="#6B7280" />
+
+            <TextView
+                android:id="@+id/feedbackText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#444"
+                android:textSize="13sp"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+        </LinearLayout>
+
+        <!-- Status / Arrow -->
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:tint="#1E88E5" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -17,7 +17,7 @@
         <LinearLayout
             android:id="@+id/top_bar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="45dp"
             android:background="@color/gray"
             android:orientation="horizontal"
             android:gravity="center_vertical"
@@ -43,7 +43,7 @@
                 android:src="@drawable/profile"
                 android:id="@+id/profile"
                 app:civ_border_width="2dp"
-                app:civ_border_color="@color/white" />
+                app:civ_border_color="@color/gray_light" />
         </LinearLayout>
 
         <!-- SCROLL CONTENT -->
@@ -71,7 +71,7 @@
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
                         android:background="#C1E9B8"
-                        android:src="@drawable/ehrs" />
+                        android:src="@drawable/logomain" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -227,15 +227,19 @@
                     android:rowCount="2"
                     android:layout_marginTop="8dp">
 
-                    <!-- Card 1 : Get Weather -->
-                    <androidx.cardview.widget.CardView
+                    <!-- Card 1 : View Report -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card1"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_columnWeight="1"
                         android:layout_margin="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp"
-                        app:cardBackgroundColor="#E6E86C">
+                        app:cardBackgroundColor="#E6E86C"
+                        app:rippleColor="?attr/colorControlHighlight">
 
                         <LinearLayout
                             android:id="@+id/option_layout_1"
@@ -245,29 +249,32 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
-                                android:src="@drawable/ic_launcher_background" />
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:src="@drawable/eyes_img" />
 
                             <TextView
-                                android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="Get Bp"
+                                android:text="@string/view_your_report"
                                 android:textStyle="bold"
-                                android:textColor="#000"
-                                android:layout_width="wrap_content"/>
+                                android:textColor="#000" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
 
-                    <!-- Card 2 : Daily Market Prices -->
-                    <androidx.cardview.widget.CardView
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card 2 : Upload Report -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card2"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_columnWeight="1"
                         android:layout_margin="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp"
-                        app:cardBackgroundColor="#7FE0E6">
+                        app:cardBackgroundColor="#7FE0E6"
+                        app:rippleColor="?attr/colorControlHighlight">
 
                         <LinearLayout
                             android:id="@+id/option_layout_2"
@@ -277,29 +284,32 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
-                                android:src="@drawable/ic_launcher_background" />
+                                android:layout_width="50dp"
+                                android:layout_height="47dp"
+                                android:src="@drawable/upload_img" />
 
                             <TextView
                                 android:layout_marginTop="8dp"
-                                android:text="Daily Task"
+                                android:text="@string/upload_report"
                                 android:textStyle="bold"
-                                android:textColor="#000"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"/>
+                                android:textColor="#000" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <!-- Card 3 : Case Study -->
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card3"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_columnWeight="1"
                         android:layout_margin="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp"
-                        app:cardBackgroundColor="#F3A1F3">
+                        app:cardBackgroundColor="#F3A1F3"
+                        app:rippleColor="?attr/colorControlHighlight">
 
                         <LinearLayout
                             android:id="@+id/option_layout_3"
@@ -317,21 +327,24 @@
                                 android:layout_marginTop="8dp"
                                 android:text="Case Study"
                                 android:textStyle="bold"
-                                android:textColor="#000"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"/>
+                                android:textColor="#000" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
 
-                    <!-- Card 4 : Expert Advice -->
-                    <androidx.cardview.widget.CardView
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Card 4 : Report -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card4"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_columnWeight="1"
                         android:layout_margin="8dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp"
-                        app:cardBackgroundColor="#E68186">
+                        app:cardBackgroundColor="#E68186"
+                        app:rippleColor="?attr/colorControlHighlight">
 
                         <LinearLayout
                             android:id="@+id/option_layout_4"
@@ -349,12 +362,13 @@
                                 android:layout_marginTop="8dp"
                                 android:text="Report"
                                 android:textStyle="bold"
-                                android:textColor="#000"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"/>
+                                android:textColor="#000" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+
+                    </com.google.android.material.card.MaterialCardView>
+
                 </GridLayout>
+
 
                 <!-- Title -->
                 <TextView

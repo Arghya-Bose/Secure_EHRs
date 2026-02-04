@@ -107,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/createAccountTxtViewBtn"
                 android:textStyle="bold"
+                android:textColor="@color/red"
                 android:text="Create Account"/>
 
 

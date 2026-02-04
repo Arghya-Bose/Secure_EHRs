@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
 }
-
 android {
     namespace = "com.example.finalyearprojecta"
     compileSdk {
@@ -33,7 +32,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
-
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -45,8 +43,5 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
     implementation(libs.circleimageview)
 }
