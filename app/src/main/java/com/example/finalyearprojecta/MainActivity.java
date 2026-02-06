@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // UI Elements
     DrawerLayout drawerLayout;
-    ImageView  cProfile;
+    ImageView  cProfile, bg_icon;
     ImageButton btnMenu;
     TextView navDashboard, logoutBtn;
     Button scanImageBtn, aboutBtn;
@@ -49,6 +49,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aboutBtn = findViewById(R.id.btn_about);
         logoutBtn = findViewById(R.id.btn_loout);
         cProfile = findViewById(R.id.profile);
+        bg_icon = findViewById(R.id.bgIcon);
+
+        bg_icon.setVisibility(View.GONE);
+
+        String role = getIntent().getStringExtra("role");
+
+        if ("lab".equalsIgnoreCase(role)) {
+            bg_icon.setVisibility(View.VISIBLE);
+        } else {
+            bg_icon.setVisibility(View.GONE);
+        }
+
 
         //Four Card
         option1 = findViewById(R.id.option_layout_1);
@@ -91,13 +103,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dialog.setContentView(view);
             dialog.show();
 
-        }else if (id ==R.id.profile) {
+        } else if (id == R.id.profile) {
             startActivity(new Intent(this, Profile_Activity.class));
 
-        }else if(id == R.id.option_layout_1) {
-            startActivity(new Intent(this, View_Report.class));
+        } else if (id == R.id.option_layout_1) {
 
-        }else if(id ==R.id.option_layout_2){
+            String role = getIntent().getStringExtra("role");
+
+            if ("lab".equalsIgnoreCase(role)) {
+                Toast.makeText(this,
+                        "Access denied. You are not eligible to get access",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                startActivity(new Intent(this, View_Report.class));
+            }
+
+        } else if (id == R.id.option_layout_2) {
             Intent intent = new Intent(MainActivity.this, Upload_Report.class);
             intent.putExtra("role", getIntent().getStringExtra("role"));
             startActivity(intent);
@@ -106,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             logout(v);
         }
     }
+
+
 
     // 🚪 LOGOUT METHOD
     public void logout(View view) {

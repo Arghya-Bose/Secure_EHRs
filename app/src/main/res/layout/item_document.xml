@@ -56,19 +56,23 @@
                 android:id="@+id/feedbackText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:textColor="#444"
                 android:textSize="13sp"
-                android:layout_marginTop="4dp"
-                android:maxLines="2"
-                android:ellipsize="end"/>
+                android:lineSpacingExtra="2dp" />
+
 
         </LinearLayout>
 
         <!-- Status / Arrow -->
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:tint="#1E88E5" />
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#6B7280"
+            android:layout_marginTop="2dp"/>
+
 
     </LinearLayout>
 

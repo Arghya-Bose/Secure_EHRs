@@ -12,6 +12,7 @@ import android.widget.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,6 @@ public class Upload_Report extends AppCompatActivity {
     TextView selectedFileText, uidTextView;
     Button chooseBtn, uploadBtn;
     ImageButton btnBack;
-
     // Data
     Uri fileUri;
     // Firebase
@@ -30,13 +30,14 @@ public class Upload_Report extends AppCompatActivity {
     FirebaseFirestore db;
     String role;
     String uploaderId;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_report);
 
-        // ===== UI INIT =====
+        // UI
         patientUniqueIdEditText = findViewById(R.id.patientUniqueIdEditText);
         detailEditText = findViewById(R.id.detail_edit_text);
         selectedFileText = findViewById(R.id.selectedFileText);
@@ -44,24 +45,32 @@ public class Upload_Report extends AppCompatActivity {
         uploadBtn = findViewById(R.id.uploadBtn);
         btnBack = findViewById(R.id.btn_back_view);
         uidTextView = findViewById(R.id.uidText);
-        // ===== FIREBASE =====
+        progressBar = findViewById(R.id.progressBar);
+
+        // Firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         uploaderId = auth.getUid();
         role = getIntent().getStringExtra("role");
 
-        // Hide UID field if patient
-        if ("patient".equals(role)) {
+        if (role == null) role = "";
+
+        // Patient UI
+        if ("patient".equalsIgnoreCase(role)) {
             patientUniqueIdEditText.setVisibility(View.GONE);
             uidTextView.setVisibility(View.GONE);
         }
 
-        // ===== LISTENERS =====
+
         chooseBtn.setOnClickListener(v -> chooseFile());
         uploadBtn.setOnClickListener(v -> startUpload());
         btnBack.setOnClickListener(v -> finish());
+
+        // ✅ FIX: button visible initially
+        changeInProgress(false);
     }
+
 
     // ================= FILE PICKER =================
     private void chooseFile() {
@@ -95,81 +104,82 @@ public class Upload_Report extends AppCompatActivity {
             return;
         }
 
-        // ===== PATIENT =====
-        if ("patient".equals(role)) {
-            db.collection("User")
-                    .document(uploaderId)
+        changeInProgress(true);
+
+        // PATIENT uploads for self
+        if ("patient".equalsIgnoreCase(role)) {
+            db.collection("User").document(uploaderId)
                     .get()
                     .addOnSuccessListener(doc -> {
                         if (doc.exists()) {
-                            String uniqueId = doc.getString("uniqueId");
-                            uploadFile(uniqueId, feedback);
+                            uploadFile(doc.getString("uniqueId"), feedback);
                         }
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Error fetching user data", Toast.LENGTH_SHORT).show()
-                    );
+                    });
 
         } else {
-            // ===== DOCTOR / LAB =====
+            // DOCTOR / LAB uploads for patient
             String patientUniqueId = patientUniqueIdEditText.getText().toString().trim();
 
             if (patientUniqueId.isEmpty()) {
                 patientUniqueIdEditText.setError("Enter patient UID");
+                changeInProgress(false);
                 return;
             }
 
-            db.collection("User")
-                    .whereEqualTo("uniqueId", patientUniqueId)
-                    .get()
-                    .addOnSuccessListener(query -> {
-                        if (!query.isEmpty()) {
-                            uploadFile(patientUniqueId, feedback);
-                        } else {
-                            Toast.makeText(this, "Invalid Patient UID", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Error fetching patient data", Toast.LENGTH_SHORT).show()
-                    );
+            uploadFile(patientUniqueId, feedback);
         }
     }
+
+
 
     // ================= FIRESTORE UPLOAD =================
     private void uploadFile(String patientUniqueId, String feedback) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
+
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            byte[] data = new byte[4096];
+            int nRead;
+
+            while ((nRead = inputStream.read(data)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            byte[] bytes = buffer.toByteArray();
             inputStream.close();
 
             String base64File = Base64.encodeToString(bytes, Base64.DEFAULT);
-            String fileName = getFileName(fileUri);
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("uploadedBy", uploaderId);
-            data.put("role", role);
-            data.put("fileName", fileName);
-            data.put("fileData", base64File);
-            data.put("feedback", feedback); // ✅ NEW FIELD
-            data.put("timestamp", FieldValue.serverTimestamp());
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("uploadedBy", uploaderId);
+            dataMap.put("role", role);
+            dataMap.put("fileName", getFileName(fileUri));
+            dataMap.put("fileData", base64File);
+            dataMap.put("feedback", feedback);
+            dataMap.put("timestamp", FieldValue.serverTimestamp());
 
             db.collection("patients")
                     .document(patientUniqueId)
                     .collection("documents")
-                    .add(data)
-                    .addOnSuccessListener(doc ->
-                            Toast.makeText(this, "Report uploaded successfully", Toast.LENGTH_SHORT).show()
-                    )
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                    );
+                    .add(dataMap)
+                    .addOnSuccessListener(doc -> {
+                        changeInProgress(false);
+                        Toast.makeText(this, "Report uploaded successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        changeInProgress(false);
+                        Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show();
+                    });
 
         } catch (Exception e) {
-            e.printStackTrace();
+            changeInProgress(false);
             Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
 
     // ================= FILE NAME HELPER =================
     private String getFileName(Uri uri) {
@@ -193,5 +203,10 @@ public class Upload_Report extends AppCompatActivity {
             result = uri.getLastPathSegment();
         }
         return result;
+    }
+
+    private void changeInProgress(boolean inProgress) {
+        progressBar.setVisibility(inProgress ? View.VISIBLE : View.GONE);
+        uploadBtn.setVisibility(inProgress ? View.GONE : View.VISIBLE);
     }
 }

@@ -7,14 +7,16 @@ public class DocumentModel {
     String role;
     String fileData;
     String feedback;
+    String uploadDate;
 
     public DocumentModel(String fileName, String uploadedBy, String role,
-                         String fileData, String feedback) {
+                         String fileData, String feedback, String uploadDate) {
         this.fileName = fileName;
         this.uploadedBy = uploadedBy;
         this.role = role;
         this.fileData = fileData;
         this.feedback = feedback;
+        this.uploadDate = uploadDate;
     }
 
     public String getFileName() { return fileName; }
@@ -22,4 +24,8 @@ public class DocumentModel {
     public String getRole() { return role; }
     public String getFileData() { return fileData; }
     public String getFeedback() { return feedback; }
+
+    public String getUploadDate() {
+        return uploadDate;
+    }
 }
