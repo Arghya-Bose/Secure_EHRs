@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Profile_Activity extends AppCompatActivity {
 
-    TextView tvUniqueId;
+    TextView tvUniqueId, nameTv, emailTv;
     Button btnCopyUid;
 
     FirebaseAuth auth;
@@ -28,6 +28,8 @@ public class Profile_Activity extends AppCompatActivity {
 
         tvUniqueId = findViewById(R.id.tvUniqueId);
         btnCopyUid = findViewById(R.id.btnCopyUid);
+        nameTv = findViewById(R.id.tvName);
+        emailTv = findViewById(R.id.tvEmail);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -40,10 +42,13 @@ public class Profile_Activity extends AppCompatActivity {
                     if(doc.exists()){
                         String uniqueId = doc.getString("uniqueId");
                         tvUniqueId.setText(uniqueId);
+                        String name = doc.getString("FullName");
+                        String email = doc.getString("UserEmail");
+                        emailTv.setText(email);
+                        nameTv.setText(name);
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(this,"Failed to fetch UID",Toast.LENGTH_SHORT).show());
-
         // Copy UID to clipboard
         btnCopyUid.setOnClickListener(v -> {
             String uid = tvUniqueId.getText().toString().trim();

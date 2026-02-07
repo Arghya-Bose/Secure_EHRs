@@ -24,10 +24,6 @@
         </provider>
 
         <activity
-            android:name=".PdfViewActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".Upload_Report"
             android:exported="false" />
 

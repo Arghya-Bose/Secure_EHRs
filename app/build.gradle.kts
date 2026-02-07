@@ -34,6 +34,7 @@ android {
 }
 dependencies {
     implementation(libs.appcompat)
+    implementation("androidx.appcompat:appcompat-resources:1.7.1") // ⚠ Fix missing styles
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)

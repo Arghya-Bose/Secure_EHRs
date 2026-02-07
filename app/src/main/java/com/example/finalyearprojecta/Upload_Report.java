@@ -1,5 +1,4 @@
 package com.example.finalyearprojecta;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -130,8 +129,6 @@ public class Upload_Report extends AppCompatActivity {
         }
     }
 
-
-
     // ================= FIRESTORE UPLOAD =================
     private void uploadFile(String patientUniqueId, String feedback) {
         try {
@@ -177,9 +174,6 @@ public class Upload_Report extends AppCompatActivity {
             Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
 
     // ================= FILE NAME HELPER =================
     private String getFileName(Uri uri) {
