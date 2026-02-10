@@ -11,8 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalyearProjectA">
+        <activity
+            android:name=".webv.WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" /> <!-- 🔴 REQUIRED FOR PDF OPEN -->
 
-        <!-- 🔴 REQUIRED FOR PDF OPEN -->
+        <activity
+            android:name=".portrait.PortraitCaptureActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -26,36 +37,30 @@
         <activity
             android:name=".Upload_Report"
             android:exported="false" />
-
         <activity
             android:name=".View_Report"
             android:exported="false" />
-
         <activity
             android:name=".Profile_Activity"
             android:exported="false" />
-
         <activity
             android:name=".Scan_Image"
             android:exported="false" />
-
         <activity
             android:name=".CreateAccount"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

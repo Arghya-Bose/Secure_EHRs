@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
+import com.example.finalyearprojecta.portrait.PortraitCaptureActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 import java.text.SimpleDateFormat;
@@ -21,11 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+import androidx.activity.result.ActivityResultLauncher;
 
 public class View_Report extends AppCompatActivity {
 
     EditText patientUniqueIdEditText;
-    ImageView fetchBtn;
+    ImageView fetchBtn,scanQrBtn;
     RecyclerView recyclerView;
     ImageButton backBtn;
     LinearLayout searchLayout;
@@ -49,6 +53,8 @@ public class View_Report extends AppCompatActivity {
         backBtn = findViewById(R.id.btn_back_view);
         searchLayout = findViewById(R.id.search_layout);
         progressBar = findViewById(R.id.view_progress);
+        scanQrBtn = findViewById(R.id.scanQrBtn);
+
 
 
         // ===== FIREBASE =====
@@ -91,6 +97,17 @@ public class View_Report extends AppCompatActivity {
                     .addOnFailureListener(e ->
                             Toast.makeText(this, "Error fetching patient", Toast.LENGTH_SHORT).show()
                     );
+        });
+
+        scanQrBtn.setOnClickListener(v -> {
+            ScanOptions options = new ScanOptions();
+            options.setPrompt("Scan Patient QR");
+            options.setBeepEnabled(true);
+
+            // ✅ FORCE PORTRAIT
+            options.setCaptureActivity(PortraitCaptureActivity.class);
+
+            qrLauncher.launch(options);
         });
     }
 
@@ -211,6 +228,15 @@ public class View_Report extends AppCompatActivity {
                 Locale.getDefault()
         ).format(date);
     }
+
+    private final ActivityResultLauncher<ScanOptions> qrLauncher =
+            registerForActivityResult(new ScanContract(), result -> {
+                if (result.getContents() != null) {
+                    String scannedUid = result.getContents().trim();
+                    patientUniqueIdEditText.setText(scannedUid);
+                    fetchDocuments(scannedUid); // ✅ SAME LOGIC
+                }
+            });
 
 
 }

@@ -12,21 +12,25 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.finalyearprojecta.webv.WebViewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     // UI Elements
     DrawerLayout drawerLayout;
-    ImageView  cProfile, bg_icon;
+    ImageView  cProfile, bg_icon, leftProfile;
     ImageButton btnMenu;
-    TextView navDashboard, logoutBtn;
+    TextView navDashboard, logoutBtn, nameText;
     Button scanImageBtn, aboutBtn;
     LinearLayout option1, option2, option3, option4;
     // Firebase
     FirebaseAuth fAuth;
-
+    FirebaseFirestore db;
+    String currentUserId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +54,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         logoutBtn = findViewById(R.id.btn_loout);
         cProfile = findViewById(R.id.profile);
         bg_icon = findViewById(R.id.bgIcon);
+        nameText = findViewById(R.id.name_text);
+        leftProfile = findViewById(R.id.left_profile);
 
         bg_icon.setVisibility(View.GONE);
 
         String role = getIntent().getStringExtra("role");
+
+        fAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        currentUserId = fAuth.getUid();
+
+        db.collection("User").document(currentUserId).
+                get().addOnSuccessListener(documentSnapshot -> {
+                    if(documentSnapshot.exists()){
+                        String name = documentSnapshot.getString("FullName");
+                        nameText.setText(name);
+                    }
+                }).addOnFailureListener(e ->{
+                    Toast.makeText(this, "Failed to load name", Toast.LENGTH_SHORT).show();
+                });
 
         if ("lab".equalsIgnoreCase(role)) {
             bg_icon.setVisibility(View.VISIBLE);
@@ -75,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aboutBtn.setOnClickListener(this);
         logoutBtn.setOnClickListener(this);
         cProfile.setOnClickListener(this);
+        leftProfile.setOnClickListener(this);
 
         // set click on four card
         option1.setOnClickListener(this);
@@ -122,6 +143,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, Upload_Report.class);
             intent.putExtra("role", getIntent().getStringExtra("role"));
             startActivity(intent);
+
+        }else if (id == R.id.option_layout_4) {
+            Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+            intent.putExtra("role", getIntent().getStringExtra("role"));
+            startActivity(intent);
+
+        }else if (id == R.id.option_layout_3) {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            intent.putExtra("role", getIntent().getStringExtra("role"));
+            startActivity(intent);
+
+        } else if (id == R.id.left_profile) {
+            Intent intent = new Intent(MainActivity.this, Profile_Activity.class);
+            startActivity(intent);
+
+            drawerLayout.closeDrawer(GravityCompat.START); // close left bar
 
         } else if (id == R.id.btn_loout) {
             logout(v);

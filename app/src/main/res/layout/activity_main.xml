@@ -379,11 +379,11 @@
                             <ImageView
                                 android:layout_width="42dp"
                                 android:layout_height="42dp"
-                                android:src="@drawable/ic_launcher_background" />
+                                android:src="@drawable/chat_icon" />
 
                             <TextView
                                 android:layout_marginTop="8dp"
-                                android:text="Report"
+                                android:text="Health Assistant"
                                 android:textStyle="bold"
                                 android:textColor="#000" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                         </LinearLayout>
@@ -539,6 +539,7 @@
 
         <!-- HEADER -->
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/left_profile"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:src="@drawable/profile"
@@ -548,7 +549,7 @@
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:text="Arghya Bose"
+            android:id="@+id/name_text"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
@@ -579,7 +580,7 @@
             android:textSize="16sp"
             android:padding="12dp"
             android:layout_height="wrap_content" android:layout_width="wrap_content"
-            android:textColor="@color/purple_200" />
+            android:textColor="@color/red" />
 
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

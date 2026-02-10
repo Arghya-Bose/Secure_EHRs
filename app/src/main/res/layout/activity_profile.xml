@@ -121,17 +121,14 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="SAVE"
-        android:layout_margin="16dp"
-        android:backgroundTint="#3D5AFE"
-        android:textColor="@android:color/white"
+    <ImageView
+        android:id="@+id/qrImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:contentDescription="User QR"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
