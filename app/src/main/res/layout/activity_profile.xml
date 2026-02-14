@@ -1,42 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F6FA">
 
-    <!-- Top Black Header -->
-    <View
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="#000000"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Profile Image -->
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/profile"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@android:color/white"
-        app:layout_constraintTop_toTopOf="@id/header"
-        app:layout_constraintBottom_toBottomOf="@id/header"
+    <!-- ================= TOP BAR ================= -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Card -->
+        <ImageButton
+            android:id="@+id/btn_back_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/edit_profile"
+        android:paddingRight="6dp"
+        android:paddingTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/edit_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBar" />
+
+
+    <!-- ================= PROFILE IMAGE ================= -->
+    <!-- ================= PROFILE IMAGE ================= -->
+    <FrameLayout
+        android:id="@+id/profileContainer"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Main Profile Image -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/profile"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@android:color/black" />
+
+        <!-- Edit / Camera Icon -->
+        <ImageView
+            android:id="@+id/pic_image"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_camera"
+            android:background="@drawable/circle_white_bg"
+            android:padding="8dp"
+            android:elevation="6dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="6dp" />
+    </FrameLayout>
+
+
+
+    <!-- ================= CARD ================= -->
     <androidx.cardview.widget.CardView
         android:id="@+id/profileCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/profileContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- KEEP YOUR INNER LAYOUT SAME -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,27 +99,46 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Name -->
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lloyd Haynes"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="#000" />
+            <LinearLayout
+                android:background="#EEEEEE"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/viewProfileDetail"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginBottom="1dp"
+                android:layout_height="wrap_content">
 
-            <!-- Email -->
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="lloyd@email.com"
-                android:textSize="14sp"
-                android:textColor="#777777"
-                android:layout_marginBottom="12dp" />
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lloyd Haynes"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#000" />
 
-            <!-- UID + Copy (Your Required Part) -->
+                <!-- Email -->
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="lloyd@email.com"
+                    android:textSize="14sp"
+                    android:textColor="#777777"/>
+
+                <TextView
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="See more.."/>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,9 +165,13 @@
 
             <!-- Menu Items -->
             <TextView
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/qr_code_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My Projects"
+                android:text="QR Code"
                 android:padding="12dp"
                 android:textSize="16sp" />
 
@@ -119,16 +197,7 @@
                 android:textSize="16sp" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/qrImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:contentDescription="User QR"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

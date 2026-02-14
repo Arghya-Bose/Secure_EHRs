@@ -263,6 +263,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground"
                                 android:orientation="vertical">
 
                                 <!-- Eye icon stays in middle -->
@@ -303,6 +306,9 @@
                             android:id="@+id/option_layout_2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -338,6 +344,9 @@
                             android:id="@+id/option_layout_3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -373,12 +382,15 @@
                             android:id="@+id/option_layout_4"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
                                 android:src="@drawable/chat_icon" />
 
                             <TextView
@@ -417,6 +429,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:orientation="horizontal"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
                         android:gravity="center_vertical"
                         android:padding="16dp">
 
@@ -459,6 +474,9 @@
                         android:layout_height="80dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
                         android:padding="16dp">
 
                         <ImageView
@@ -496,6 +514,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:padding="16dp">
@@ -525,7 +546,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </ScrollView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- ================= LEFT NAVIGATION DRAWER ================= -->
@@ -565,13 +585,15 @@
         <TextView
             android:text="Profile"
             android:textSize="16sp"
-            android:layout_height="wrap_content" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:padding="12dp" />
 
         <TextView
             android:text="Settings"
             android:textSize="16sp"
-            android:layout_height="wrap_content" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:padding="12dp" />
 
         <TextView
@@ -579,7 +601,8 @@
             android:text="Logout"
             android:textSize="16sp"
             android:padding="12dp"
-            android:layout_height="wrap_content" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:textColor="@color/red" />
 
     </LinearLayout>

@@ -65,10 +65,11 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:padding="6dp"
                         android:id="@+id/patientUniqueIdEditText"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:hint="  Enter patient UID"
+                        android:hint="Enter patient UID"
                         android:background="@drawable/search_background"
                         android:layout_marginTop="6dp" />
 
@@ -118,12 +119,13 @@
 
                     <!-- Feedback -->
                     <EditText
+                        android:padding="6dp"
                         android:id="@+id/detail_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/search_background"
-                        android:hint="  Write the feedback......" />
+                        android:background="@drawable/search_background_1"
+                        android:hint="Write the feedback......" />
 
                     <!-- Upload Button -->
                     <com.google.android.material.button.MaterialButton

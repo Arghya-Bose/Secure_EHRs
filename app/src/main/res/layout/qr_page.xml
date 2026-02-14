@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Drag Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_handle"
+        android:layout_marginBottom="16dp" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:src="@drawable/logomain" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="250dp"
+        android:layout_height="255dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="12dp"
+        app:cardUseCompatPadding="true"
+        app:strokeWidth="0dp">
+
+        <ImageView
+            android:id="@+id/qrImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:contentDescription="User QR"
+            android:scaleType="fitCenter" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>
