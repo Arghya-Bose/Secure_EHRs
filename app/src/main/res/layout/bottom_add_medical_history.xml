@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Drag Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_handle"
+        android:layout_marginBottom="16dp" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/logomain" />
+
+    <EditText
+        android:id="@+id/etType"
+        android:hint="Type"
+        android:layout_width="match_parent"
+        android:background="@drawable/search_background_1"
+        android:layout_height="45dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:hint="Title"
+        android:layout_width="match_parent"
+        android:background="@drawable/search_background_1"
+        android:layout_height="45dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etYear"
+        android:hint="Year"
+        android:layout_width="match_parent"
+        android:background="@drawable/search_background_1"
+        android:layout_height="45dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/etNotes"
+        android:hint="Notes"
+        android:layout_width="match_parent"
+        android:background="@drawable/search_background_1"
+        android:layout_height="45dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"/>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:text="Save"
+        android:layout_width="match_parent"
+        android:backgroundTint="#7CFF7C"
+        android:textColor="#2E7D32"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+

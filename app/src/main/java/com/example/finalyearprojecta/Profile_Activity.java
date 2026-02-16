@@ -3,47 +3,52 @@ package com.example.finalyearprojecta;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
-
+import androidx.annotation.Nullable;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.finalyearprojecta.databinding.ActivityProfileBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
 public class Profile_Activity extends AppCompatActivity {
-
-    TextView tvUniqueId, nameTv, emailTv, qrImageOPenBtn;
-    Button btnCopyUid;
-    ImageView btnEditProfile;
-    LinearLayout viewProfileDetail;
     FirebaseAuth auth;
-    FirebaseFirestore db;
+    FirebaseFirestore db, secondFirestore;
     String currentUserId;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
+    private static final int PICK_IMAGE = 101;
+    Uri imageUri;
+    private ActivityProfileBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        binding = ActivityProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // 🔒 Block screenshots & screen recording
         getWindow().setFlags(
@@ -51,24 +56,15 @@ public class Profile_Activity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SECURE
         );
 
-        // UI
-        tvUniqueId = findViewById(R.id.tvUniqueId);
-        btnCopyUid = findViewById(R.id.btnCopyUid);
-        nameTv = findViewById(R.id.tvName);
-        emailTv = findViewById(R.id.tvEmail);
-        qrImageOPenBtn = findViewById(R.id.qr_code_tv);
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUserId = auth.getUid();
 
-        btnEditProfile = findViewById(R.id.edit_profile);
-        viewProfileDetail = findViewById(R.id.viewProfileDetail);
-
-        btnEditProfile.setOnClickListener(v -> openEditBottomSheet());
-
-        viewProfileDetail.setOnClickListener(v -> openViewBottomSheet());
-
+        binding.editProfile.setOnClickListener(v -> openEditBottomSheet());
+        binding.viewProfileDetail.setOnClickListener(v -> openViewBottomSheet());
+        binding.btnBackView.setOnClickListener(v->{
+            finish();
+        });
 
         if (currentUserId == null) return;
 
@@ -77,9 +73,9 @@ public class Profile_Activity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
-                        tvUniqueId.setText(doc.getString("uniqueId"));
-                        nameTv.setText(doc.getString("FullName"));
-                        emailTv.setText(doc.getString("UserEmail"));
+                        binding.tvUniqueId.setText(doc.getString("uniqueId"));
+                        binding.tvName.setText(doc.getString("FullName"));
+                        binding.tvEmail.setText(doc.getString("UserEmail"));
                     }
                 })
                 .addOnFailureListener(e ->
@@ -89,8 +85,8 @@ public class Profile_Activity extends AppCompatActivity {
                 );
 
         // 📋 Copy UID
-        btnCopyUid.setOnClickListener(v -> {
-            String uid = tvUniqueId.getText().toString().trim();
+        binding.btnCopyUid.setOnClickListener(v -> {
+            String uid = binding.tvUniqueId.getText().toString().trim();
             if (!uid.isEmpty()) {
                 ClipboardManager clipboard =
                         (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -106,11 +102,34 @@ public class Profile_Activity extends AppCompatActivity {
         setupBiometric();
 
         // 🔒 QR Button Click → Ask for Authentication First
-        qrImageOPenBtn.setOnClickListener(v -> {
+        binding.qrCodeTv.setOnClickListener(v -> {
             biometricPrompt.authenticate(promptInfo);
         });
-    }
 
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setApiKey("AIzaSyBRCHYvnSUWqQTW3ZCKJAQBDO6_e1Xh2Ss")
+                .setApplicationId("1:654325754:android:fd4258dd800897e4055643")
+                .setProjectId("multiscreenapp-27573")
+                .build();
+
+        FirebaseApp secondApp;
+
+        try {
+            secondApp = FirebaseApp.initializeApp(this, options, "secondApp");
+        } catch (IllegalStateException e) {
+            secondApp = FirebaseApp.getInstance("secondApp");
+        }
+
+        secondFirestore = FirebaseFirestore.getInstance(secondApp);
+        binding.picImageToProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, PICK_IMAGE);
+        });
+
+        fetchProfileImage();
+
+    }
     // ================= BIOMETRIC SETUP =================
     private void setupBiometric() {
 
@@ -145,7 +164,6 @@ public class Profile_Activity extends AppCompatActivity {
                 .build();
 
     }
-
     // ================= SHOW QR IN BOTTOM SHEET =================
     private void showSecureQr() {
 
@@ -153,7 +171,7 @@ public class Profile_Activity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.qr_page, null);
         ImageView bottomQrImage = view.findViewById(R.id.qrImage);
 
-        String uid = tvUniqueId.getText().toString().trim();
+        String uid = binding.tvUniqueId.getText().toString().trim();
 
         if (!uid.isEmpty()) {
             try {
@@ -169,11 +187,9 @@ public class Profile_Activity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
         dialog.setContentView(view);
         dialog.show();
     }
-
     private void openEditBottomSheet() {
 
         BottomSheetDialog dialog = new BottomSheetDialog(this);
@@ -231,8 +247,6 @@ public class Profile_Activity extends AppCompatActivity {
                                     "Error: " + e.getMessage(),
                                     Toast.LENGTH_LONG).show());
         });
-
-
         dialog.setContentView(view);
         dialog.show();
     }
@@ -266,4 +280,123 @@ public class Profile_Activity extends AppCompatActivity {
         dialog.setContentView(view);
         dialog.show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
+            imageUri = data.getData();
+            binding.profileImg.setImageURI(imageUri);
+
+            uploadImageToSecondFirestore(imageUri);
+        }
+    }
+
+    private String imageToBase64(Uri uri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            Bitmap originalBitmap = BitmapFactory.decodeStream(inputStream);
+
+            // 🔹 Resize image (max 600x600)
+            int maxSize = 600;
+            int width = originalBitmap.getWidth();
+            int height = originalBitmap.getHeight();
+
+            float ratio = Math.min(
+                    (float) maxSize / width,
+                    (float) maxSize / height
+            );
+
+            int newWidth = Math.round(width * ratio);
+            int newHeight = Math.round(height * ratio);
+
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(
+                    originalBitmap,
+                    newWidth,
+                    newHeight,
+                    true
+            );
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            int quality = 60;  // start compression
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+
+            // 🔥 Reduce quality more if still large
+            while (baos.toByteArray().length > 900000 && quality > 20) {
+                baos.reset();
+                quality -= 10;
+                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+            }
+
+            byte[] imageBytes = baos.toByteArray();
+
+            if (imageBytes.length > 1000000) {
+                Toast.makeText(this,
+                        "Image still too large. Choose smaller image.",
+                        Toast.LENGTH_LONG).show();
+                return null;
+            }
+
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void uploadImageToSecondFirestore(Uri uri) {
+
+        if (currentUserId == null) return;
+
+        String base64Image = imageToBase64(uri);
+
+        if (base64Image == null) {
+            Toast.makeText(this, "Image too large", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("profileImage", base64Image);
+
+        secondFirestore.collection("users")
+                .document(currentUserId)
+                .set(map)
+                .addOnSuccessListener(unused ->
+                        Toast.makeText(this,
+                                "Profile image uploaded",
+                                Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e ->
+                        Toast.makeText(this,
+                                e.getMessage(),
+                                Toast.LENGTH_SHORT).show());
+    }
+
+    private void fetchProfileImage() {
+
+        if (currentUserId == null) return;
+
+        secondFirestore.collection("users")
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+
+                    if (documentSnapshot.exists()) {
+
+                        String base64 = documentSnapshot.getString("profileImage");
+
+                        if (base64 != null) {
+                            byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+                            Bitmap bitmap =
+                                    BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            binding.profileImg.setImageBitmap(bitmap);
+                        }
+                    }
+                });
+    }
+
 }

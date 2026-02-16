@@ -30,6 +30,7 @@ android {
 
     buildFeatures {
         buildConfig = true // ✅ This enables BuildConfig generation
+        viewBinding = true
     }
 
     compileOptions {
@@ -57,4 +58,6 @@ dependencies {
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
+
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 }

@@ -12,17 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalyearProjectA">
         <activity
+            android:name=".medicalrecords.MedicalHistoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".webv.WebViewActivity"
             android:exported="false" />
         <activity
             android:name=".ChatActivity"
             android:exported="false" /> <!-- 🔴 REQUIRED FOR PDF OPEN -->
-
         <activity
             android:name=".portrait.PortraitCaptureActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

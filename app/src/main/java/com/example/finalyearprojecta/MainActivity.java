@@ -10,27 +10,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
+import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
 import com.example.finalyearprojecta.webv.WebViewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    // UI Elements
     DrawerLayout drawerLayout;
     ImageView  cProfile, bg_icon, leftProfile;
+    CardView mHistory;
     ImageButton btnMenu;
     TextView navDashboard, logoutBtn, nameText;
     Button scanImageBtn, aboutBtn;
-    LinearLayout option1, option2, option3, option4;
-    // Firebase
+    LinearLayout option1, option2, option3, option4, medicalHistory;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
     String currentUserId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bg_icon = findViewById(R.id.bgIcon);
         nameText = findViewById(R.id.name_text);
         leftProfile = findViewById(R.id.left_profile);
+        medicalHistory = findViewById(R.id.medical_history_view);
+        mHistory = findViewById(R.id.historyCard);
 
         bg_icon.setVisibility(View.GONE);
 
@@ -77,7 +79,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if ("lab".equalsIgnoreCase(role)) {
             bg_icon.setVisibility(View.VISIBLE);
-        } else {
+            mHistory.setVisibility(View.GONE);
+        }
+        if("doctor".equalsIgnoreCase(role)){
+            mHistory.setVisibility(View.GONE);
+        }
+        else {
             bg_icon.setVisibility(View.GONE);
         }
 
@@ -102,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         option2.setOnClickListener(this);
         option3.setOnClickListener(this);
         option4.setOnClickListener(this);
+        medicalHistory.setOnClickListener(this);
     }
 
     @Override
@@ -126,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (id == R.id.profile) {
             startActivity(new Intent(this, Profile_Activity.class));
+
+        } else if (id == R.id.medical_history_view) {
+            startActivity(new Intent(this, MedicalHistoryActivity.class));
 
         } else if (id == R.id.option_layout_1) {
 
@@ -164,8 +175,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             logout(v);
         }
     }
-
-
 
     // 🚪 LOGOUT METHOD
     public void logout(View view) {

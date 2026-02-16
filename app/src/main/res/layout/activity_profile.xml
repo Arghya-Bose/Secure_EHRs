@@ -13,6 +13,7 @@
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -57,7 +58,7 @@
 
         <!-- Main Profile Image -->
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile"
+            android:id="@+id/profileImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/profile"
@@ -66,7 +67,7 @@
 
         <!-- Edit / Camera Icon -->
         <ImageView
-            android:id="@+id/pic_image"
+            android:id="@+id/pic_image_toProfile"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:src="@drawable/ic_camera"

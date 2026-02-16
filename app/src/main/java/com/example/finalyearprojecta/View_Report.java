@@ -2,20 +2,15 @@ package com.example.finalyearprojecta;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
+import com.example.finalyearprojecta.databinding.ActivityViewReportBinding;
 import com.example.finalyearprojecta.portrait.PortraitCaptureActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,35 +22,18 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import androidx.activity.result.ActivityResultLauncher;
 
 public class View_Report extends AppCompatActivity {
-
-    EditText patientUniqueIdEditText;
-    ImageView fetchBtn,scanQrBtn;
-    RecyclerView recyclerView;
-    ImageButton backBtn;
-    LinearLayout searchLayout;
+    private ActivityViewReportBinding binding;
     FirebaseAuth auth;
     FirebaseFirestore db;
     String currentUserId;
     List<DocumentModel> documents;
     DocumentAdapter adapter;
-    ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_report);
-
-        // ===== UI =====
-        patientUniqueIdEditText = findViewById(R.id.patientUniqueIdEditText);
-        fetchBtn = findViewById(R.id.fetchBtn);
-        recyclerView = findViewById(R.id.recyclerView);
-        backBtn = findViewById(R.id.btn_back_view);
-        searchLayout = findViewById(R.id.search_layout);
-        progressBar = findViewById(R.id.view_progress);
-        scanQrBtn = findViewById(R.id.scanQrBtn);
-
-
+        binding = ActivityViewReportBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // ===== FIREBASE =====
         auth = FirebaseAuth.getInstance();
@@ -63,12 +41,12 @@ public class View_Report extends AppCompatActivity {
         currentUserId = auth.getUid();
 
         // ===== RECYCLER =====
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         documents = new ArrayList<>();
         adapter = new DocumentAdapter(documents);
-        recyclerView.setAdapter(adapter);
+        binding.recyclerView.setAdapter(adapter);
 
-        backBtn.setOnClickListener(v -> finish());
+        binding.btnBackView.setOnClickListener(v -> finish());
 
         if (currentUserId == null) return;
 
@@ -76,11 +54,11 @@ public class View_Report extends AppCompatActivity {
         loadUserRoleAndData();
 
         // ===== DOCTOR / LAB SEARCH =====
-        fetchBtn.setOnClickListener(v -> {
-            String patientUniqueId = patientUniqueIdEditText.getText().toString().trim();
+        binding.fetchBtn.setOnClickListener(v -> {
+            String patientUniqueId = binding.patientUniqueIdEditText.getText().toString().trim();
 
             if (patientUniqueId.isEmpty()) {
-                patientUniqueIdEditText.setError("Enter patient UID");
+                binding.patientUniqueIdEditText.setError("Enter patient UID");
                 return;
             }
 
@@ -99,7 +77,7 @@ public class View_Report extends AppCompatActivity {
                     );
         });
 
-        scanQrBtn.setOnClickListener(v -> {
+        binding.scanQrBtn.setOnClickListener(v -> {
             ScanOptions options = new ScanOptions();
             options.setPrompt("Scan Patient QR");
             options.setBeepEnabled(true);
@@ -125,9 +103,9 @@ public class View_Report extends AppCompatActivity {
                     // ===== PATIENT =====
                     if ("patient".equalsIgnoreCase(role)) {
 
-                        patientUniqueIdEditText.setVisibility(View.GONE);
-                        fetchBtn.setVisibility(View.GONE);
-                        searchLayout.setVisibility(View.GONE);
+                        binding.patientUniqueIdEditText.setVisibility(View.GONE);
+                        binding.fetchBtn.setVisibility(View.GONE);
+                        binding.searchLayout.setVisibility(View.GONE);
 
                         if (uniqueId != null && !uniqueId.isEmpty()) {
                             fetchDocuments(uniqueId); // ✅ AUTO LOAD
@@ -137,8 +115,8 @@ public class View_Report extends AppCompatActivity {
 
                     } else {
                         // ===== DOCTOR / LAB =====
-                        patientUniqueIdEditText.setVisibility(View.VISIBLE);
-                        fetchBtn.setVisibility(View.VISIBLE);
+                        binding.patientUniqueIdEditText.setVisibility(View.VISIBLE);
+                        binding.fetchBtn.setVisibility(View.VISIBLE);
                     }
                 })
                 .addOnFailureListener(e ->
@@ -148,8 +126,8 @@ public class View_Report extends AppCompatActivity {
 
     // ================= FETCH DOCUMENTS =================
     private void fetchDocuments(String patientUniqueId) {
-        progressBar.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+        binding.viewProgress.setVisibility(View.VISIBLE);
+        binding.recyclerView.setVisibility(View.GONE);
 
         documents.clear();
         adapter.notifyDataSetChanged();
@@ -162,8 +140,8 @@ public class View_Report extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
 
                     if (querySnapshot.isEmpty()) {
-                        progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
+                        binding.viewProgress.setVisibility(View.GONE);
+                        binding.recyclerView.setVisibility(View.VISIBLE);
                         return;
                     }
 
@@ -193,8 +171,8 @@ public class View_Report extends AppCompatActivity {
                                     ));
 
                                     adapter.notifyDataSetChanged();
-                                    progressBar.setVisibility(View.GONE);
-                                    recyclerView.setVisibility(View.VISIBLE);
+                                    binding.viewProgress.setVisibility(View.GONE);
+                                    binding.recyclerView.setVisibility(View.VISIBLE);
                                 })
                                 .addOnFailureListener(e -> {
                                     // fallback: show UID if name fetch fails
@@ -207,14 +185,14 @@ public class View_Report extends AppCompatActivity {
                                             uploadDate
                                     ));
                                     adapter.notifyDataSetChanged();
-                                    progressBar.setVisibility(View.GONE);
-                                    recyclerView.setVisibility(View.VISIBLE);
+                                    binding.viewProgress.setVisibility(View.GONE);
+                                    binding.recyclerView.setVisibility(View.VISIBLE);
                                 });
                     }
                 })
                 .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+                    binding.viewProgress.setVisibility(View.GONE);
+                    binding.recyclerView.setVisibility(View.VISIBLE);
                     Toast.makeText(this,
                             "Failed to load documents: " + e.getMessage(),
                             Toast.LENGTH_SHORT).show();
@@ -233,7 +211,7 @@ public class View_Report extends AppCompatActivity {
             registerForActivityResult(new ScanContract(), result -> {
                 if (result.getContents() != null) {
                     String scannedUid = result.getContents().trim();
-                    patientUniqueIdEditText.setText(scannedUid);
+                    binding.patientUniqueIdEditText.setText(scannedUid);
                     fetchDocuments(scannedUid); // ✅ SAME LOGIC
                 }
             });
