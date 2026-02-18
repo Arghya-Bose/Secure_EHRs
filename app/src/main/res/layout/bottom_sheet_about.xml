@@ -30,8 +30,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="(Text Will Chenged as Required) Our Secure EHR System is designed to protect patient medical records with advanced encryption and strict access control mechanisms. By implementing Role-Based Access Control (RBAC), only authorized users such as doctors, hospitals, and patients can access relevant data. Blockchain-based verification ensures data integrity and prevents unauthorized tampering. Secure cloud integration allows real-time, anytime access while maintaining privacy. Automated audit logs monitor all activities, ensuring transparency, compliance, and trust in modern digital healthcare systems."
-        android:textAlignment="center"
-        android:layout_marginTop="12dp" />
+        android:text="@string/about_app"
+         android:textAlignment="center"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:lineSpacingExtra="4dp"/>
+
 
 </LinearLayout>

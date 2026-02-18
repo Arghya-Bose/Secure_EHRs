@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.view.View;
 import com.example.finalyearprojecta.databinding.ActivityViewReportBinding;
+import com.example.finalyearprojecta.viewprofile.ProfileViewModel;
 import com.example.finalyearprojecta.portrait.PortraitCaptureActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
@@ -67,7 +68,9 @@ public class View_Report extends AppCompatActivity {
                     .get()
                     .addOnSuccessListener(query -> {
                         if (!query.isEmpty()) {
+                            saveProfileView(patientUniqueId);
                             fetchDocuments(patientUniqueId);
+
                         } else {
                             Toast.makeText(this, "Invalid Patient UID", Toast.LENGTH_SHORT).show();
                         }
@@ -212,9 +215,44 @@ public class View_Report extends AppCompatActivity {
                 if (result.getContents() != null) {
                     String scannedUid = result.getContents().trim();
                     binding.patientUniqueIdEditText.setText(scannedUid);
-                    fetchDocuments(scannedUid); // ✅ SAME LOGIC
+                    saveProfileView(scannedUid);
+                    fetchDocuments(scannedUid);
+
                 }
             });
 
+
+    private void saveProfileView(String patientUniqueId) {
+
+        if (currentUserId == null) return;
+
+        db.collection("User")
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(userDoc -> {
+
+                    if (!userDoc.exists()) return;
+
+                    String viewerName = userDoc.getString("FullName");
+                    String viewerRole = userDoc.getString("role");
+
+                    if (viewerName == null) viewerName = "Unknown";
+
+                    // Prevent patient viewing himself
+                    String currentUserUniqueId = userDoc.getString("uniqueId");
+                    if (patientUniqueId.equals(currentUserUniqueId)) return;
+
+                    // Save inside patient's profile
+                    db.collection("patients")
+                            .document(patientUniqueId)
+                            .collection("profileViews")
+                            .add(new ProfileViewModel(
+                                    currentUserId,
+                                    viewerName,
+                                    viewerRole,
+                                    Timestamp.now()
+                            ));
+                });
+    }
 
 }

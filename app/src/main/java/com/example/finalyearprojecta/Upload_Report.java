@@ -93,13 +93,13 @@ public class Upload_Report extends AppCompatActivity {
     private void startUpload() {
 
         if (fileUri == null) {
-            Toast.makeText(this, "Select a PDF file first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Select a file first", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String feedback = detailEditText.getText().toString().trim();
         if (feedback.isEmpty()) {
-            detailEditText.setError("Please write feedback");
+            detailEditText.setError("Please write detail");
             return;
         }
 

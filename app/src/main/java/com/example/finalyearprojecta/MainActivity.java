@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
+import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
 import com.example.finalyearprojecta.webv.WebViewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView  cProfile, bg_icon, leftProfile;
     CardView mHistory;
     ImageButton btnMenu;
-    TextView navDashboard, logoutBtn, nameText;
+    TextView navDashboard, logoutBtn, nameText,viewProfile;
     Button scanImageBtn, aboutBtn;
     LinearLayout option1, option2, option3, option4, medicalHistory;
     FirebaseAuth fAuth;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         leftProfile = findViewById(R.id.left_profile);
         medicalHistory = findViewById(R.id.medical_history_view);
         mHistory = findViewById(R.id.historyCard);
+        viewProfile = findViewById(R.id.profile_viewers);
 
         bg_icon.setVisibility(View.GONE);
 
@@ -69,10 +71,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         db.collection("User").document(currentUserId).
                 get().addOnSuccessListener(documentSnapshot -> {
-                    if(documentSnapshot.exists()){
+                    if (documentSnapshot.exists()) {
+
                         String name = documentSnapshot.getString("FullName");
+                        String uniqueId = documentSnapshot.getString("uniqueId");
                         nameText.setText(name);
+
+                        viewProfile.setOnClickListener(v -> {
+                            Intent intent = new Intent(MainActivity.this, ProfileViewersActivity.class);
+                            intent.putExtra("uniqueId", uniqueId);
+                            startActivity(intent);
+                        });
                     }
+
                 }).addOnFailureListener(e ->{
                     Toast.makeText(this, "Failed to load name", Toast.LENGTH_SHORT).show();
                 });
@@ -87,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else {
             bg_icon.setVisibility(View.GONE);
         }
-
 
         //Four Card
         option1 = findViewById(R.id.option_layout_1);
