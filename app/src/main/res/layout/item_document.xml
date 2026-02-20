@@ -26,7 +26,7 @@
             android:src="@drawable/ic_file"
             android:tint="#43A047" />
 
-        <!-- Text -->
+        <!-- Text Section -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,6 +34,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <!-- File Name -->
             <TextView
                 android:id="@+id/fileNameText"
                 android:layout_width="wrap_content"
@@ -43,6 +44,7 @@
                 android:textStyle="bold"
                 android:textColor="#1F2933" />
 
+            <!-- Uploaded By -->
             <TextView
                 android:id="@+id/uploadedByText"
                 android:layout_width="wrap_content"
@@ -52,6 +54,7 @@
                 android:textSize="13sp"
                 android:textColor="#6B7280" />
 
+            <!-- Feedback -->
             <TextView
                 android:id="@+id/feedbackText"
                 android:layout_width="match_parent"
@@ -61,18 +64,16 @@
                 android:textSize="13sp"
                 android:lineSpacingExtra="2dp" />
 
-
         </LinearLayout>
 
-        <!-- Status / Arrow -->
+        <!-- Date -->
         <TextView
             android:id="@+id/dateText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="#6B7280"
             android:layout_marginTop="2dp"/>
-
 
     </LinearLayout>
 

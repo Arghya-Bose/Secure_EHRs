@@ -1,5 +1,7 @@
 package com.example.finalyearprojecta;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,28 +10,38 @@ import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.view.View;
 import android.widget.*;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Upload_Report extends AppCompatActivity {
-    // UI
+
+    // ================= UI =================
     EditText patientUniqueIdEditText, detailEditText;
     TextView selectedFileText, uidTextView;
     Button chooseBtn, uploadBtn;
     ImageButton btnBack;
-    // Data
+    ProgressBar progressBar;
+
+    // 🔥 NEW
+    AutoCompleteTextView categoryDropdown, subCategoryDropdown;
+    String selectedCategory = "";
+    String selectedSubCategory = "";
+
+    // ================= DATA =================
     Uri fileUri;
-    // Firebase
+
+    // ================= FIREBASE =================
     FirebaseAuth auth;
     FirebaseFirestore db;
     String role;
     String uploaderId;
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +58,16 @@ public class Upload_Report extends AppCompatActivity {
         uidTextView = findViewById(R.id.uidText);
         progressBar = findViewById(R.id.progressBar);
 
+        // 🔥 NEW UI
+        categoryDropdown = findViewById(R.id.categoryDropdown);
+        subCategoryDropdown = findViewById(R.id.subCategoryDropdown);
+
         // Firebase
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         uploaderId = auth.getUid();
         role = getIntent().getStringExtra("role");
-
         if (role == null) role = "";
 
         // Patient UI
@@ -61,15 +76,78 @@ public class Upload_Report extends AppCompatActivity {
             uidTextView.setVisibility(View.GONE);
         }
 
+        // ================= CATEGORY SETUP =================
+        String[] categories = {
+                "Lab Tests",
+                "Imaging",
+                "Heart Tests",
+                "Neuro Tests",
+                "Infection Tests",
+                "Other Reports"
+        };
 
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                categories
+        );
+
+        categoryDropdown.setAdapter(categoryAdapter);
+
+        categoryDropdown.setOnItemClickListener((parent, view, position, id) -> {
+
+            selectedCategory = categories[position];
+
+            String[] subCategories;
+
+            switch (selectedCategory) {
+
+                case "Lab Tests":
+                    subCategories = new String[]{"CBC", "LFT", "KFT", "Lipid Profile"};
+                    break;
+
+                case "Imaging":
+                    subCategories = new String[]{"X-ray", "MRI", "CT Scan", "Ultrasound"};
+                    break;
+
+                case "Heart Tests":
+                    subCategories = new String[]{"ECG", "Echo", "TMT"};
+                    break;
+
+                case "Neuro Tests":
+                    subCategories = new String[]{"EEG", "NCV", "EMG"};
+                    break;
+
+                case "Infection Tests":
+                    subCategories = new String[]{"COVID-19", "Dengue", "Malaria", "HIV"};
+                    break;
+
+                default:
+                    subCategories = new String[]{"General Report"};
+            }
+
+            ArrayAdapter<String> subAdapter = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    subCategories
+            );
+
+            subCategoryDropdown.setText("");
+            selectedSubCategory = "";
+            subCategoryDropdown.setAdapter(subAdapter);
+        });
+
+        subCategoryDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedSubCategory = parent.getItemAtPosition(position).toString();
+        });
+
+        // ================= BUTTONS =================
         chooseBtn.setOnClickListener(v -> chooseFile());
         uploadBtn.setOnClickListener(v -> startUpload());
         btnBack.setOnClickListener(v -> finish());
 
-        // ✅ FIX: button visible initially
         changeInProgress(false);
     }
-
 
     // ================= FILE PICKER =================
     private void chooseFile() {
@@ -89,11 +167,21 @@ public class Upload_Report extends AppCompatActivity {
         }
     }
 
-    // ================= UPLOAD START =================
+    // ================= START UPLOAD =================
     private void startUpload() {
 
         if (fileUri == null) {
             Toast.makeText(this, "Select a file first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedCategory.isEmpty()) {
+            Toast.makeText(this, "Select Category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedSubCategory.isEmpty()) {
+            Toast.makeText(this, "Select Sub Category", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -105,18 +193,20 @@ public class Upload_Report extends AppCompatActivity {
 
         changeInProgress(true);
 
-        // PATIENT uploads for self
         if ("patient".equalsIgnoreCase(role)) {
+
             db.collection("User").document(uploaderId)
                     .get()
                     .addOnSuccessListener(doc -> {
                         if (doc.exists()) {
                             uploadFile(doc.getString("uniqueId"), feedback);
+                        } else {
+                            changeInProgress(false);
                         }
                     });
 
         } else {
-            // DOCTOR / LAB uploads for patient
+
             String patientUniqueId = patientUniqueIdEditText.getText().toString().trim();
 
             if (patientUniqueId.isEmpty()) {
@@ -131,7 +221,9 @@ public class Upload_Report extends AppCompatActivity {
 
     // ================= FIRESTORE UPLOAD =================
     private void uploadFile(String patientUniqueId, String feedback) {
+
         try {
+
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
 
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -153,6 +245,8 @@ public class Upload_Report extends AppCompatActivity {
             dataMap.put("fileName", getFileName(fileUri));
             dataMap.put("fileData", base64File);
             dataMap.put("feedback", feedback);
+            dataMap.put("category", selectedCategory);
+            dataMap.put("subCategory", selectedSubCategory);
             dataMap.put("timestamp", FieldValue.serverTimestamp());
 
             db.collection("patients")
@@ -175,11 +269,13 @@ public class Upload_Report extends AppCompatActivity {
         }
     }
 
-    // ================= FILE NAME HELPER =================
+    // ================= FILE NAME =================
     private String getFileName(Uri uri) {
+
         String result = "document.pdf";
 
         if (uri.getScheme().equals("content")) {
+
             Cursor cursor = getContentResolver()
                     .query(uri, null, null, null, null);
 
@@ -193,12 +289,15 @@ public class Upload_Report extends AppCompatActivity {
             } finally {
                 if (cursor != null) cursor.close();
             }
+
         } else if (uri.getScheme().equals("file")) {
             result = uri.getLastPathSegment();
         }
+
         return result;
     }
 
+    // ================= PROGRESS =================
     private void changeInProgress(boolean inProgress) {
         progressBar.setVisibility(inProgress ? View.VISIBLE : View.GONE);
         uploadBtn.setVisibility(inProgress ? View.GONE : View.VISIBLE);

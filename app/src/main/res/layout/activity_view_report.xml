@@ -3,23 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#f5f7fa"> <!-- light background -->
+    android:background="#F5F7FA"> <!-- light background -->
 
     <LinearLayout
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:padding="16dp">
 
         <ImageButton
             android:id="@+id/btn_back_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Back" />
+            android:src="@drawable/ic_arrow_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,13 +31,15 @@
 
     <!-- Search Bar -->
     <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="15dp"
         android:id="@+id/search_layout"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@drawable/search_background"
+        android:background="@drawable/search_background_1"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:gravity="center_vertical">
@@ -73,6 +74,78 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginHorizontal="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:weightSum="2">
+
+        <!-- Category Dropdown -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:boxStrokeColor="#2A9D8F"
+            android:layout_marginEnd="8dp"
+            android:hint="Category"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="dropdown_menu">
+
+            <AutoCompleteTextView
+                android:id="@+id/categoryDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="12dp"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:padding="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Subcategory Dropdown -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:boxStrokeColor="#2A9D8F"
+            android:layout_marginStart="8dp"
+            android:hint="Sub Category"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="dropdown_menu">
+
+            <AutoCompleteTextView
+                android:id="@+id/subCategoryDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:inputType="none"
+                android:textSize="12dp"
+                android:focusable="false"
+                android:clickable="true"
+                android:padding="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+
+
+
+    <!-- SubCategory Dropdown -->
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No Report available"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="16dp"/>
+
+
+
     <!-- RecyclerView -->
     <FrameLayout
         android:layout_width="match_parent"
@@ -80,6 +153,7 @@
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginHorizontal="15dp"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

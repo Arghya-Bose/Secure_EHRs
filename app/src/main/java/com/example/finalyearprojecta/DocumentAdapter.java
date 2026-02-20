@@ -16,14 +16,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHolder> {
 
-    private final List<DocumentModel> documents;
+    private final List<DocumentModel> documents;     // current displayed list
+    private final List<DocumentModel> allDocuments;  // full list for filtering
 
     public DocumentAdapter(List<DocumentModel> documents) {
         this.documents = documents;
+        this.allDocuments = new ArrayList<>(documents);
     }
 
     @NonNull
@@ -50,7 +53,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
         // ===== FEEDBACK =====
         holder.feedbackText.setText(
                 doc.getFeedback() == null || doc.getFeedback().isEmpty()
-                        ? "No detail founded"
+                        ? "No detail found"
                         : "Detail: " + doc.getFeedback()
         );
 
@@ -61,10 +64,12 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
                         : doc.getUploadDate()
         );
 
+        // ===== CATEGORY & SUBCATEGORY =====
+//        holder.categoryText.setText("Category: " + doc.getCategory());
+//        holder.subCategoryText.setText("Sub Category: "+doc.getSubCategory());
+
         // ===== OPEN PDF =====
-        holder.itemView.setOnClickListener(v ->
-                openPdf(v.getContext(), doc)
-        );
+        holder.itemView.setOnClickListener(v -> openPdf(v.getContext(), doc));
     }
 
     private void openPdf(Context context, DocumentModel doc) {
@@ -99,9 +104,26 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
         return documents.size();
     }
 
+    // ================== FILTERING ==================
+    public void filter(String category, String subCategory) {
+        documents.clear();
+
+        for (DocumentModel doc : allDocuments) {
+            boolean matchCategory = category == null || category.isEmpty() || category.equals("All") || doc.getCategory().equals(category);
+            boolean matchSubCategory = subCategory == null || subCategory.isEmpty() || subCategory.equals("All") || doc.getSubCategory().equals(subCategory);
+
+            if (matchCategory && matchSubCategory) {
+                documents.add(doc);
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    // ================== VIEW HOLDER ==================
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView fileNameText, uploadedByText, feedbackText, dateText;
+        TextView fileNameText, uploadedByText, feedbackText, dateText, categoryText, subCategoryText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,6 +131,8 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
             uploadedByText = itemView.findViewById(R.id.uploadedByText);
             feedbackText = itemView.findViewById(R.id.feedbackText);
             dateText = itemView.findViewById(R.id.dateText);
+//            categoryText = itemView.findViewById(R.id.categoryText);
+//            subCategoryText = itemView.findViewById(R.id.subCategoryText);
         }
     }
 }

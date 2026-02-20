@@ -9,14 +9,19 @@ public class DocumentModel {
     String feedback;
     String uploadDate;
 
+    private String category;
+    private String subCategory;
+
     public DocumentModel(String fileName, String uploadedBy, String role,
-                         String fileData, String feedback, String uploadDate) {
+                         String fileData, String feedback, String uploadDate, String category, String subCategory) {
         this.fileName = fileName;
         this.uploadedBy = uploadedBy;
         this.role = role;
         this.fileData = fileData;
         this.feedback = feedback;
         this.uploadDate = uploadDate;
+        this.category = category;
+        this.subCategory = subCategory;
     }
 
     public String getFileName() { return fileName; }
@@ -28,4 +33,7 @@ public class DocumentModel {
     public String getUploadDate() {
         return uploadDate;
     }
+
+    public String getCategory() { return category; }
+    public String getSubCategory() { return subCategory; }
 }

@@ -4,31 +4,43 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
+
 import com.example.finalyearprojecta.databinding.ActivityViewReportBinding;
 import com.example.finalyearprojecta.viewprofile.ProfileViewModel;
 import com.example.finalyearprojecta.portrait.PortraitCaptureActivity;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.Query;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import java.util.ArrayList;
-import java.util.List;
+
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import androidx.activity.result.ActivityResultLauncher;
 
 public class View_Report extends AppCompatActivity {
+
     private ActivityViewReportBinding binding;
     FirebaseAuth auth;
     FirebaseFirestore db;
     String currentUserId;
-    List<DocumentModel> documents;
+    List<DocumentModel> allDocuments;
+    List<DocumentModel> filteredDocuments;
     DocumentAdapter adapter;
+
+    // Dropdown selected values
+    String selectedCategory = "All";
+    String selectedSubCategory = "All";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +48,24 @@ public class View_Report extends AppCompatActivity {
         binding = ActivityViewReportBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // ===== FIREBASE =====
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         currentUserId = auth.getUid();
 
         // ===== RECYCLER =====
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        documents = new ArrayList<>();
-        adapter = new DocumentAdapter(documents);
+        allDocuments = new ArrayList<>();
+        filteredDocuments = new ArrayList<>();
+        adapter = new DocumentAdapter(filteredDocuments);
         binding.recyclerView.setAdapter(adapter);
 
         binding.btnBackView.setOnClickListener(v -> finish());
-
         if (currentUserId == null) return;
 
-        // ===== LOAD USER ROLE FROM FIRESTORE =====
+        // ===== CATEGORY DROPDOWN =====
+        setupCategoryDropdown();
+
+        // ===== LOAD USER ROLE =====
         loadUserRoleAndData();
 
         // ===== DOCTOR / LAB SEARCH =====
@@ -70,7 +84,6 @@ public class View_Report extends AppCompatActivity {
                         if (!query.isEmpty()) {
                             saveProfileView(patientUniqueId);
                             fetchDocuments(patientUniqueId);
-
                         } else {
                             Toast.makeText(this, "Invalid Patient UID", Toast.LENGTH_SHORT).show();
                         }
@@ -84,12 +97,93 @@ public class View_Report extends AppCompatActivity {
             ScanOptions options = new ScanOptions();
             options.setPrompt("Scan Patient QR");
             options.setBeepEnabled(true);
-
-            // ✅ FORCE PORTRAIT
             options.setCaptureActivity(PortraitCaptureActivity.class);
-
             qrLauncher.launch(options);
         });
+
+        binding.categoryDropdown.setOnClickListener(v -> binding.categoryDropdown.showDropDown());
+        binding.subCategoryDropdown.setOnClickListener(v -> binding.subCategoryDropdown.showDropDown());
+    }
+
+    // ================= CATEGORY & SUBCATEGORY DROPDOWN =================
+    private void setupCategoryDropdown() {
+        AutoCompleteTextView categoryDropdown = binding.categoryDropdown;
+        AutoCompleteTextView subCategoryDropdown = binding.subCategoryDropdown;
+
+        String[] categories = {"All", "Lab Tests", "Imaging", "Heart Tests", "Neuro Tests", "Infection Tests", "Other Reports"};
+
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                categories
+        );
+        categoryDropdown.setAdapter(categoryAdapter);
+
+        categoryDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedCategory = categories[position];
+
+            String[] subCategories;
+            switch (selectedCategory) {
+                case "Lab Tests":
+                    subCategories = new String[]{"All", "CBC", "LFT", "KFT", "Lipid Profile"};
+                    break;
+                case "Imaging":
+                    subCategories = new String[]{"All", "X-ray", "MRI", "CT Scan", "Ultrasound"};
+                    break;
+                case "Heart Tests":
+                    subCategories = new String[]{"All", "ECG", "Echo", "TMT"};
+                    break;
+                case "Neuro Tests":
+                    subCategories = new String[]{"All", "EEG", "NCV", "EMG"};
+                    break;
+                case "Infection Tests":
+                    subCategories = new String[]{"All", "COVID-19", "Dengue", "Malaria", "HIV"};
+                    break;
+                default:
+                    subCategories = new String[]{"All", "General Report"};
+            }
+
+            ArrayAdapter<String> subAdapter = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    subCategories
+            );
+
+            subCategoryDropdown.setText("All");
+            selectedSubCategory = "All";
+            subCategoryDropdown.setAdapter(subAdapter);
+
+            filterDocuments();
+        });
+
+        subCategoryDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedSubCategory = subCategoryDropdown.getAdapter().getItem(position).toString();
+            filterDocuments();
+        });
+    }
+
+    // ================= FILTER DOCUMENTS =================
+    private void filterDocuments() {
+        filteredDocuments.clear();
+
+        for (DocumentModel doc : allDocuments) {
+            boolean matchesCategory = selectedCategory.equals("All") || doc.getCategory().equals(selectedCategory);
+            boolean matchesSubCategory = selectedSubCategory.equals("All") || doc.getSubCategory().equals(selectedSubCategory);
+
+            if (matchesCategory && matchesSubCategory) {
+                filteredDocuments.add(doc);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+
+        if (filteredDocuments.isEmpty()) {
+            binding.emptyText.setVisibility(View.VISIBLE);
+            binding.recyclerView.setVisibility(View.GONE);
+        } else {
+            binding.emptyText.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     // ================= LOAD ROLE =================
@@ -103,21 +197,18 @@ public class View_Report extends AppCompatActivity {
                     String role = doc.getString("role");
                     String uniqueId = doc.getString("uniqueId");
 
-                    // ===== PATIENT =====
                     if ("patient".equalsIgnoreCase(role)) {
-
                         binding.patientUniqueIdEditText.setVisibility(View.GONE);
                         binding.fetchBtn.setVisibility(View.GONE);
                         binding.searchLayout.setVisibility(View.GONE);
 
                         if (uniqueId != null && !uniqueId.isEmpty()) {
-                            fetchDocuments(uniqueId); // ✅ AUTO LOAD
+                            fetchDocuments(uniqueId); // Auto load
                         } else {
                             Toast.makeText(this, "Unique ID missing", Toast.LENGTH_SHORT).show();
                         }
 
                     } else {
-                        // ===== DOCTOR / LAB =====
                         binding.patientUniqueIdEditText.setVisibility(View.VISIBLE);
                         binding.fetchBtn.setVisibility(View.VISIBLE);
                     }
@@ -132,7 +223,8 @@ public class View_Report extends AppCompatActivity {
         binding.viewProgress.setVisibility(View.VISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
 
-        documents.clear();
+        allDocuments.clear();
+        filteredDocuments.clear();
         adapter.notifyDataSetChanged();
 
         db.collection("patients")
@@ -144,7 +236,8 @@ public class View_Report extends AppCompatActivity {
 
                     if (querySnapshot.isEmpty()) {
                         binding.viewProgress.setVisibility(View.GONE);
-                        binding.recyclerView.setVisibility(View.VISIBLE);
+                        binding.emptyText.setVisibility(View.VISIBLE);
+                        binding.recyclerView.setVisibility(View.GONE);
                         return;
                     }
 
@@ -154,48 +247,55 @@ public class View_Report extends AppCompatActivity {
                         Timestamp ts = doc.getTimestamp("timestamp");
                         String uploadDate = formatDate(ts != null ? ts.toDate() : null);
 
-                        // Fetch uploader name from User collection
                         db.collection("User").document(uid)
                                 .get()
                                 .addOnSuccessListener(userDoc -> {
                                     String name = "Unknown";
                                     if (userDoc.exists()) {
-                                        name = userDoc.getString("FullName"); // or "fullName" depending on your schema
+                                        name = userDoc.getString("FullName");
                                     }
 
-                                    // Add document to list with resolved name
-                                    documents.add(new DocumentModel(
+                                    String category = doc.contains("category") ? doc.getString("category") : "N/A";
+                                    String subCategory = doc.contains("subCategory") ? doc.getString("subCategory") : "N/A";
+
+                                    allDocuments.add(new DocumentModel(
                                             doc.getString("fileName"),
-                                            name,   // now shows actual name
+                                            name,
                                             role,
                                             doc.getString("fileData"),
                                             doc.getString("feedback"),
-                                            uploadDate
+                                            uploadDate,
+                                            category,
+                                            subCategory
                                     ));
 
-                                    adapter.notifyDataSetChanged();
+                                    filterDocuments(); // Apply filter immediately
                                     binding.viewProgress.setVisibility(View.GONE);
-                                    binding.recyclerView.setVisibility(View.VISIBLE);
                                 })
                                 .addOnFailureListener(e -> {
-                                    // fallback: show UID if name fetch fails
-                                    documents.add(new DocumentModel(
+                                    String category = doc.contains("category") ? doc.getString("category") : "N/A";
+                                    String subCategory = doc.contains("subCategory") ? doc.getString("subCategory") : "N/A";
+
+                                    allDocuments.add(new DocumentModel(
                                             doc.getString("fileName"),
                                             uid,
                                             role,
                                             doc.getString("fileData"),
                                             doc.getString("feedback"),
-                                            uploadDate
+                                            uploadDate,
+                                            category,
+                                            subCategory
                                     ));
-                                    adapter.notifyDataSetChanged();
+
+                                    filterDocuments();
                                     binding.viewProgress.setVisibility(View.GONE);
-                                    binding.recyclerView.setVisibility(View.VISIBLE);
                                 });
                     }
                 })
                 .addOnFailureListener(e -> {
                     binding.viewProgress.setVisibility(View.GONE);
-                    binding.recyclerView.setVisibility(View.VISIBLE);
+                    binding.emptyText.setVisibility(View.VISIBLE);
+                    binding.recyclerView.setVisibility(View.GONE);
                     Toast.makeText(this,
                             "Failed to load documents: " + e.getMessage(),
                             Toast.LENGTH_SHORT).show();
@@ -204,10 +304,7 @@ public class View_Report extends AppCompatActivity {
 
     private String formatDate(Date date) {
         if (date == null) return "N/A";
-        return new SimpleDateFormat(
-                "dd MMM yyyy\nhh:mm a",
-                Locale.getDefault()
-        ).format(date);
+        return new SimpleDateFormat("dd MMM yyyy\nhh:mm a", Locale.getDefault()).format(date);
     }
 
     private final ActivityResultLauncher<ScanOptions> qrLauncher =
@@ -217,32 +314,25 @@ public class View_Report extends AppCompatActivity {
                     binding.patientUniqueIdEditText.setText(scannedUid);
                     saveProfileView(scannedUid);
                     fetchDocuments(scannedUid);
-
                 }
             });
 
-
     private void saveProfileView(String patientUniqueId) {
-
         if (currentUserId == null) return;
 
         db.collection("User")
                 .document(currentUserId)
                 .get()
                 .addOnSuccessListener(userDoc -> {
-
                     if (!userDoc.exists()) return;
 
                     String viewerName = userDoc.getString("FullName");
                     String viewerRole = userDoc.getString("role");
-
                     if (viewerName == null) viewerName = "Unknown";
 
-                    // Prevent patient viewing himself
                     String currentUserUniqueId = userDoc.getString("uniqueId");
                     if (patientUniqueId.equals(currentUserUniqueId)) return;
 
-                    // Save inside patient's profile
                     db.collection("patients")
                             .document(patientUniqueId)
                             .collection("profileViews")
@@ -254,5 +344,4 @@ public class View_Report extends AppCompatActivity {
                             ));
                 });
     }
-
 }
