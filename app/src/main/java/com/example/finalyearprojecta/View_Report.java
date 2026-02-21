@@ -333,6 +333,9 @@ public class View_Report extends AppCompatActivity {
                     String currentUserUniqueId = userDoc.getString("uniqueId");
                     if (patientUniqueId.equals(currentUserUniqueId)) return;
 
+                    String vContact = userDoc.getString("contact");
+                    if(vContact == null) vContact = "No Contact to show";
+
                     db.collection("patients")
                             .document(patientUniqueId)
                             .collection("profileViews")
@@ -340,6 +343,7 @@ public class View_Report extends AppCompatActivity {
                                     currentUserId,
                                     viewerName,
                                     viewerRole,
+                                    vContact,
                                     Timestamp.now()
                             ));
                 });

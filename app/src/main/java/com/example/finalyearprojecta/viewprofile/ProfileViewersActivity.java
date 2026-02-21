@@ -73,7 +73,7 @@ public class ProfileViewersActivity extends AppCompatActivity {
 
                     int count = querySnapshot.size();
 
-                    binding.tvViewerCount.setText("Total Views: " + count);
+                    binding.tvViewerCount.setText(String.valueOf(count));
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this,

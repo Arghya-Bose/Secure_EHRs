@@ -35,14 +35,20 @@ public class ViewerAdapter extends RecyclerView.Adapter<ViewerAdapter.ViewHolder
 
         holder.name.setText(model.getViewerName());
         holder.role.setText(model.getViewerRole());
+        //holder.contact.setText("Emergency contact: "+model.getvContact());
 
         if (model.getTimestamp() != null) {
-            String formatted = new SimpleDateFormat(
-                    "dd MMM yyyy hh:mm a",
-                    Locale.getDefault()
-            ).format(model.getTimestamp().toDate());
 
-            holder.time.setText(formatted);
+            long timeInMillis = model.getTimestamp().toDate().getTime();
+            long now = System.currentTimeMillis();
+
+            CharSequence timeAgo = android.text.format.DateUtils.getRelativeTimeSpanString(
+                    timeInMillis,
+                    now,
+                    android.text.format.DateUtils.MINUTE_IN_MILLIS
+            );
+
+            holder.time.setText(timeAgo);
         }
     }
 
@@ -53,7 +59,7 @@ public class ViewerAdapter extends RecyclerView.Adapter<ViewerAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, role, time;
+        TextView name, role, time, contact;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -61,6 +67,7 @@ public class ViewerAdapter extends RecyclerView.Adapter<ViewerAdapter.ViewHolder
             name = itemView.findViewById(R.id.tvViewerName);
             role = itemView.findViewById(R.id.tvViewerRole);
             time = itemView.findViewById(R.id.tvViewerTime);
+            //contact = itemView.findViewById(R.id.tvViewerContact);
         }
     }
 }
