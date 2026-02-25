@@ -473,6 +473,7 @@
                     app:cardBackgroundColor="#7CFF7C">
 
                     <LinearLayout
+                        android:id="@+id/report_analysis_view"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:orientation="horizontal"

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalyearProjectA">
         <activity
+            android:name=".ocr.LabReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".viewprofile.ProfileViewersActivity"
             android:exported="false" />
         <activity

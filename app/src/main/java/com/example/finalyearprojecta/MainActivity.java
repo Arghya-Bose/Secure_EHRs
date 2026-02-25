@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
+import com.example.finalyearprojecta.ocr.LabReportActivity;
 import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
 import com.example.finalyearprojecta.webv.WebViewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageButton btnMenu;
     TextView navDashboard, logoutBtn, nameText,viewProfile;
     Button scanImageBtn, aboutBtn;
-    LinearLayout option1, option2, option3, option4, medicalHistory;
+    LinearLayout option1, option2, option3, option4, medicalHistory,reportAnalysis;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
     String currentUserId;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         nameText = findViewById(R.id.name_text);
         leftProfile = findViewById(R.id.left_profile);
         medicalHistory = findViewById(R.id.medical_history_view);
+        reportAnalysis = findViewById(R.id.report_analysis_view);
         mHistory = findViewById(R.id.historyCard);
         viewProfile = findViewById(R.id.profile_viewers);
 
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         option3.setOnClickListener(this);
         option4.setOnClickListener(this);
         medicalHistory.setOnClickListener(this);
+        reportAnalysis.setOnClickListener(this);
     }
 
     @Override
@@ -147,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (id == R.id.medical_history_view) {
             startActivity(new Intent(this, MedicalHistoryActivity.class));
+
+        } else if (id == R.id.report_analysis_view) {
+            startActivity(new Intent(this, LabReportActivity.class));
 
         } else if (id == R.id.option_layout_1) {
 

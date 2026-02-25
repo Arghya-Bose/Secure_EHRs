@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.finalyearprojecta.databinding.ActivityViewReportBinding;
+import com.example.finalyearprojecta.utils.AESUtils;
 import com.example.finalyearprojecta.viewprofile.ProfileViewModel;
 import com.example.finalyearprojecta.portrait.PortraitCaptureActivity;
 import com.google.firebase.Timestamp;
@@ -242,6 +243,7 @@ public class View_Report extends AppCompatActivity {
                     }
 
                     for (QueryDocumentSnapshot doc : querySnapshot) {
+
                         String uid = doc.getString("uploadedBy");
                         String role = doc.getString("role");
                         Timestamp ts = doc.getTimestamp("timestamp");
@@ -250,42 +252,34 @@ public class View_Report extends AppCompatActivity {
                         db.collection("User").document(uid)
                                 .get()
                                 .addOnSuccessListener(userDoc -> {
+
                                     String name = "Unknown";
                                     if (userDoc.exists()) {
                                         name = userDoc.getString("FullName");
                                     }
 
-                                    String category = doc.contains("category") ? doc.getString("category") : "N/A";
-                                    String subCategory = doc.contains("subCategory") ? doc.getString("subCategory") : "N/A";
+                                    try {
 
-                                    allDocuments.add(new DocumentModel(
-                                            doc.getString("fileName"),
-                                            name,
-                                            role,
-                                            doc.getString("fileData"),
-                                            doc.getString("feedback"),
-                                            uploadDate,
-                                            category,
-                                            subCategory
-                                    ));
+                                        String decryptedFileName = safeDecrypt(doc.getString("fileName"));
+                                        String decryptedFileData = safeDecrypt(doc.getString("fileData"));
+                                        String decryptedFeedback = safeDecrypt(doc.getString("feedback"));
+                                        String decryptedCategory = safeDecrypt(doc.getString("category"));
+                                        String decryptedSubCategory = safeDecrypt(doc.getString("subCategory"));
 
-                                    filterDocuments(); // Apply filter immediately
-                                    binding.viewProgress.setVisibility(View.GONE);
-                                })
-                                .addOnFailureListener(e -> {
-                                    String category = doc.contains("category") ? doc.getString("category") : "N/A";
-                                    String subCategory = doc.contains("subCategory") ? doc.getString("subCategory") : "N/A";
+                                        allDocuments.add(new DocumentModel(
+                                                decryptedFileName,
+                                                name,
+                                                role,
+                                                decryptedFileData,
+                                                decryptedFeedback,
+                                                uploadDate,
+                                                decryptedCategory,
+                                                decryptedSubCategory
+                                        ));
 
-                                    allDocuments.add(new DocumentModel(
-                                            doc.getString("fileName"),
-                                            uid,
-                                            role,
-                                            doc.getString("fileData"),
-                                            doc.getString("feedback"),
-                                            uploadDate,
-                                            category,
-                                            subCategory
-                                    ));
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
                                     filterDocuments();
                                     binding.viewProgress.setVisibility(View.GONE);
@@ -347,5 +341,16 @@ public class View_Report extends AppCompatActivity {
                                     Timestamp.now()
                             ));
                 });
+    }
+
+    private String safeDecrypt(String value) {
+        if (value == null) return "N/A";
+
+        try {
+            return AESUtils.decrypt(value);
+        } catch (Exception e) {
+            // If already plain text (old data), return as it is
+            return value;
+        }
     }
 }

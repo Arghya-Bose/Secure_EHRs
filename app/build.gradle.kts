@@ -37,6 +37,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 }
 
 dependencies {
@@ -60,4 +66,6 @@ dependencies {
     implementation("androidx.biometric:biometric:1.2.0-alpha05")
 
     implementation("com.google.firebase:firebase-storage:20.3.0")
+
+    implementation("com.google.mlkit:text-recognition:16.0.0-beta5")
 }

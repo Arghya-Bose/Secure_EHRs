@@ -11,6 +11,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.*;
 
+import com.example.finalyearprojecta.utils.AESUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -238,15 +239,20 @@ public class Upload_Report extends AppCompatActivity {
             inputStream.close();
 
             String base64File = Base64.encodeToString(bytes, Base64.DEFAULT);
+            String encryptedFile = AESUtils.encrypt(base64File);
+            String encryptedFeedback = AESUtils.encrypt(feedback);
+            String encryptedCategory = AESUtils.encrypt(selectedCategory);
+            String encryptedSubCategory = AESUtils.encrypt(selectedSubCategory);
+            String encryptedFileName = AESUtils.encrypt(getFileName(fileUri));
 
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("uploadedBy", uploaderId);
             dataMap.put("role", role);
-            dataMap.put("fileName", getFileName(fileUri));
-            dataMap.put("fileData", base64File);
-            dataMap.put("feedback", feedback);
-            dataMap.put("category", selectedCategory);
-            dataMap.put("subCategory", selectedSubCategory);
+            dataMap.put("fileName", encryptedFileName);
+            dataMap.put("fileData", encryptedFile);
+            dataMap.put("feedback", encryptedFeedback);
+            dataMap.put("category", encryptedCategory);
+            dataMap.put("subCategory", encryptedSubCategory);
             dataMap.put("timestamp", FieldValue.serverTimestamp());
 
             db.collection("patients")
