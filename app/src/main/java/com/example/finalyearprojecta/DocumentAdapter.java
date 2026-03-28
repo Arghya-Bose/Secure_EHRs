@@ -69,16 +69,23 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 //        holder.subCategoryText.setText("Sub Category: "+doc.getSubCategory());
 
         // ===== OPEN PDF =====
-        holder.itemView.setOnClickListener(v -> openPdf(v.getContext(), doc));
+        holder.itemView.setOnClickListener(v -> openFile(v.getContext(), doc));
     }
 
-    private void openPdf(Context context, DocumentModel doc) {
+    private void openFile(Context context, DocumentModel doc) {
         try {
-            byte[] pdfBytes = Base64.decode(doc.getFileData(), Base64.DEFAULT);
+            byte[] bytes = Base64.decode(doc.getFileData(), Base64.DEFAULT);
 
-            File file = new File(context.getCacheDir(), doc.getFileName());
+            // 🔥 Ensure correct filename
+            String fileName = doc.getFileName();
+            if (fileName == null || fileName.isEmpty()) {
+                fileName = "file";
+            }
+
+            File file = new File(context.getCacheDir(), fileName);
+
             FileOutputStream fos = new FileOutputStream(file);
-            fos.write(pdfBytes);
+            fos.write(bytes);
             fos.close();
 
             Uri uri = FileProvider.getUriForFile(
@@ -88,8 +95,28 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
             );
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, "application/pdf");
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // 🔥 GET FILE TYPE
+            String fileType = doc.getFileType();
+
+            // 🔥 Fallback if null (old data)
+            if (fileType == null) {
+                if (fileName.toLowerCase().endsWith(".pdf")) {
+                    fileType = "pdf";
+                } else {
+                    fileType = "image";
+                }
+            }
+
+            // 🔥 SET CORRECT MIME TYPE
+            if (fileType.equals("pdf")) {
+                intent.setDataAndType(uri, "application/pdf");
+            } else if (fileType.equals("image")) {
+                intent.setDataAndType(uri, "image/*");
+            } else {
+                intent.setDataAndType(uri, "*/*");
+            }
 
             context.startActivity(intent);
 

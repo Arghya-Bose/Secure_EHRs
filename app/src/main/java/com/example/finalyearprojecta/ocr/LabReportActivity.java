@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class LabReportActivity extends AppCompatActivity {
     private LinearLayout resultContainer;
     private static final int PICK_IMAGE = 100;
 
+    ImageView btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,9 @@ public class LabReportActivity extends AppCompatActivity {
         btnUpload = findViewById(R.id.btnUpload);
         resultContainer = findViewById(R.id.resultContainer);
         progressBar = findViewById(R.id.progressBar);
+        btnBack = findViewById(R.id.btn_back_view);
+
+        btnBack.setOnClickListener(v -> finish());
 
         btnUpload.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);

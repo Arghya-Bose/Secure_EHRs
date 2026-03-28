@@ -16,6 +16,9 @@
         android:padding="16dp">
 
         <ImageButton
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/btn_back_view"
             android:layout_width="40dp"
             android:layout_height="40dp"

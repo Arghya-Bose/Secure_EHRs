@@ -352,13 +352,13 @@
                             android:orientation="vertical">
 
                             <ImageView
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
-                                android:src="@drawable/ic_launcher_background" />
+                                android:layout_width="50dp"
+                                android:layout_height="47dp"
+                                android:src="@drawable/pres" />
 
                             <TextView
                                 android:layout_marginTop="8dp"
-                                android:text="Case Study"
+                                android:text="Manage Prescription"
                                 android:textStyle="bold"
                                 android:textColor="#000" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                         </LinearLayout>
@@ -486,7 +486,7 @@
                         <ImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:src="@drawable/scanc"
+                            android:src="@drawable/pres_analysis"
                             android:contentDescription="Development Team" />
 
                         <TextView
@@ -494,7 +494,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:text="Application Development Team"
+                            android:text="Report Analysis"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="#000000" />
@@ -516,6 +516,7 @@
                     app:cardBackgroundColor="#7CF08A">
 
                     <LinearLayout
+                        android:id="@+id/Prescs_mng"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:clickable="true"
@@ -536,7 +537,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:text="Application Development Team"
+                            android:text="Chat"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="#000000" />
@@ -581,15 +582,19 @@
 
         <!-- MENU ITEMS -->
         <TextView
-            android:id="@+id/dashboard"
-            android:text="Dashboard"
+            android:id="@+id/appointment"
+            android:text="Appointment"
             android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
             android:padding="12dp"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 
         <TextView
             android:id="@+id/profile_viewers"
             android:text="Profile"
             android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:padding="12dp" />
@@ -597,6 +602,8 @@
         <TextView
             android:text="Settings"
             android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:padding="12dp" />
@@ -606,6 +613,8 @@
             android:text="Logout"
             android:textSize="16sp"
             android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/red" />

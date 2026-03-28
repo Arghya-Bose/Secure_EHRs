@@ -1,4 +1,4 @@
-package com.example.finalyearprojecta.apoinment;
+package com.example.finalyearprojecta.appointment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -23,11 +23,10 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     Context context;
 
     FirebaseFirestore db;
-
-    public AppointmentAdapter(List<AppointmentModel> list, Context context) {
+    public AppointmentAdapter(List<AppointmentModel> list, Context context, FirebaseFirestore db) {
         this.list = list;
         this.context = context;
-        db = FirebaseFirestore.getInstance(FirebaseApp.getInstance("secondApp"));
+        this.db = db;
     }
 
     @NonNull
@@ -67,7 +66,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public int getItemCount() { return list.size(); }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txt;
         Button btnApprove, btnReject, btnCancel;

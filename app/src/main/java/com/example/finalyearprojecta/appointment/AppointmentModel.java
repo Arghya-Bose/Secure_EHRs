@@ -1,7 +1,5 @@
-package com.example.finalyearprojecta.apoinment;
-
+package com.example.finalyearprojecta.appointment;
 public class AppointmentModel {
-
     String id, doctorId, date, time, status, patientId;
 
     public AppointmentModel(String id, String doctorId, String date, String time, String status, String patientId) {

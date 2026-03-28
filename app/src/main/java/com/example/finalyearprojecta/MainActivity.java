@@ -13,8 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.finalyearprojecta.appointment.AppointmentActivity;
 import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
 import com.example.finalyearprojecta.ocr.LabReportActivity;
+import com.example.finalyearprojecta.prescription.Prescription;
 import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
 import com.example.finalyearprojecta.webv.WebViewActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -26,9 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView  cProfile, bg_icon, leftProfile;
     CardView mHistory;
     ImageButton btnMenu;
-    TextView navDashboard, logoutBtn, nameText,viewProfile;
+    TextView appointment, logoutBtn, nameText,viewProfile;
     Button scanImageBtn, aboutBtn;
-    LinearLayout option1, option2, option3, option4, medicalHistory,reportAnalysis;
+    LinearLayout option1, option2, option3, option4, medicalHistory,reportAnalysis, prescMng;
     FirebaseAuth fAuth;
     FirebaseFirestore db;
     String currentUserId;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // INIT VIEWS
         drawerLayout = findViewById(R.id.drawerLayout);
         btnMenu = findViewById(R.id.btn_menu);
-        navDashboard = findViewById(R.id.dashboard);
+        appointment = findViewById(R.id.appointment);
         scanImageBtn = findViewById(R.id.scan_btn);
         aboutBtn = findViewById(R.id.btn_about);
         logoutBtn = findViewById(R.id.btn_loout);
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         reportAnalysis = findViewById(R.id.report_analysis_view);
         mHistory = findViewById(R.id.historyCard);
         viewProfile = findViewById(R.id.profile_viewers);
+        prescMng = findViewById(R.id.Prescs_mng);
 
         bg_icon.setVisibility(View.GONE);
 
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // SET CLICK LISTENERS
         btnMenu.setOnClickListener(this);
-        navDashboard.setOnClickListener(this);
+        appointment.setOnClickListener(this);
         scanImageBtn.setOnClickListener(this);
         aboutBtn.setOnClickListener(this);
         logoutBtn.setOnClickListener(this);
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         option4.setOnClickListener(this);
         medicalHistory.setOnClickListener(this);
         reportAnalysis.setOnClickListener(this);
+        prescMng.setOnClickListener(this);
     }
 
     @Override
@@ -132,8 +137,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.btn_menu) {
             drawerLayout.openDrawer(GravityCompat.START);
 
-        } else if (id == R.id.dashboard) {
-            Toast.makeText(this, "Dashboard clicked", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.appointment) {
+            startActivity(new Intent(this, AppointmentActivity.class));
             drawerLayout.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.scan_btn) {
@@ -153,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (id == R.id.report_analysis_view) {
             startActivity(new Intent(this, LabReportActivity.class));
+
+        } else if (id == R.id.Prescs_mng) {
+            startActivity(new Intent(this, ChatActivity.class));
 
         } else if (id == R.id.option_layout_1) {
 
@@ -177,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
 
         }else if (id == R.id.option_layout_3) {
-            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            Intent intent = new Intent(MainActivity.this, Prescription.class);
             intent.putExtra("role", getIntent().getStringExtra("role"));
             startActivity(intent);
 

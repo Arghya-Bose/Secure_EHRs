@@ -17,6 +17,9 @@
         android:elevation="4dp">
 
         <ImageButton
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/btn_back_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -64,6 +67,11 @@
 
     <!-- ================= BOTTOM BUTTON ================= -->
     <Button
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:backgroundTint="#7CFF7C"
+        android:textColor="#2E7D32"
         android:id="@+id/btnUpload"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -71,8 +79,6 @@
         android:text="Upload Lab Report"
         android:textAllCaps="false"
         android:textSize="16sp"
-        android:backgroundTint="#1976D2"
-        android:textColor="@android:color/white"
         android:elevation="6dp"/>
 
 </LinearLayout>

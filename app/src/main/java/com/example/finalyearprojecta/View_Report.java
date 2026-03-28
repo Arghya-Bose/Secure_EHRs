@@ -259,12 +259,22 @@ public class View_Report extends AppCompatActivity {
                                     }
 
                                     try {
-
                                         String decryptedFileName = safeDecrypt(doc.getString("fileName"));
                                         String decryptedFileData = safeDecrypt(doc.getString("fileData"));
                                         String decryptedFeedback = safeDecrypt(doc.getString("feedback"));
                                         String decryptedCategory = safeDecrypt(doc.getString("category"));
                                         String decryptedSubCategory = safeDecrypt(doc.getString("subCategory"));
+
+                                        String fileType = doc.getString("fileType");
+
+                                        // 🔥 fallback for old data
+                                        if (fileType == null) {
+                                            if (decryptedFileName.toLowerCase().endsWith(".pdf")) {
+                                                fileType = "pdf";
+                                            } else {
+                                                fileType = "image";
+                                            }
+                                        }
 
                                         allDocuments.add(new DocumentModel(
                                                 decryptedFileName,
@@ -273,6 +283,7 @@ public class View_Report extends AppCompatActivity {
                                                 decryptedFileData,
                                                 decryptedFeedback,
                                                 uploadDate,
+                                                fileType,
                                                 decryptedCategory,
                                                 decryptedSubCategory
                                         ));
@@ -280,7 +291,6 @@ public class View_Report extends AppCompatActivity {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-
                                     filterDocuments();
                                     binding.viewProgress.setVisibility(View.GONE);
                                 });

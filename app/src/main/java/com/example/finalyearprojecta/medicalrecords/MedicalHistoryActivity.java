@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.example.finalyearprojecta.R;
 import com.example.finalyearprojecta.databinding.ActivityMedicalHistoryBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -28,6 +29,7 @@ public class MedicalHistoryActivity extends AppCompatActivity {
     String currentUserId;
     List<MedicalRecord> list;
     MedicalHistoryAdapter adapter;
+    ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,9 @@ public class MedicalHistoryActivity extends AppCompatActivity {
         binding.recyclerMedicalHistory.setLayoutManager(new LinearLayoutManager(this));
         auth = FirebaseAuth.getInstance();
         currentUserId = auth.getUid();
+        btnBack = findViewById(R.id.btn_back_view);
+
+        btnBack.setOnClickListener(v -> finish());
 
         // 🔥 Initialize Second Firebase
         FirebaseOptions options = new FirebaseOptions.Builder()

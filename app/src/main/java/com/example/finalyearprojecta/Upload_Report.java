@@ -153,7 +153,11 @@ public class Upload_Report extends AppCompatActivity {
     // ================= FILE PICKER =================
     private void chooseFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("application/pdf");
+        intent.setType("*/*");
+
+        String[] mimeTypes = {"application/pdf", "image/*"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
         startActivityForResult(intent, 101);
     }
 
@@ -238,16 +242,35 @@ public class Upload_Report extends AppCompatActivity {
             byte[] bytes = buffer.toByteArray();
             inputStream.close();
 
+
+
             String base64File = Base64.encodeToString(bytes, Base64.DEFAULT);
             String encryptedFile = AESUtils.encrypt(base64File);
             String encryptedFeedback = AESUtils.encrypt(feedback);
             String encryptedCategory = AESUtils.encrypt(selectedCategory);
             String encryptedSubCategory = AESUtils.encrypt(selectedSubCategory);
-            String encryptedFileName = AESUtils.encrypt(getFileName(fileUri));
+
+            String fileName = getFileName(fileUri);
+
+            String fileType;
+
+            if (fileName.toLowerCase().endsWith(".pdf")) {
+                fileType = "pdf";
+            } else if (
+                    fileName.toLowerCase().endsWith(".jpg") ||
+                            fileName.toLowerCase().endsWith(".jpeg") ||
+                            fileName.toLowerCase().endsWith(".png")
+            ) {
+                fileType = "image";
+            } else {
+                fileType = "unknown";
+            }
+            String encryptedFileName = AESUtils.encrypt(fileName);
 
             Map<String, Object> dataMap = new HashMap<>();
             dataMap.put("uploadedBy", uploaderId);
             dataMap.put("role", role);
+            dataMap.put("fileType", fileType);
             dataMap.put("fileName", encryptedFileName);
             dataMap.put("fileData", encryptedFile);
             dataMap.put("feedback", encryptedFeedback);
