@@ -1,216 +1,61 @@
 package com.example.finalyearprojecta;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
-import com.example.finalyearprojecta.appointment.AppointmentActivity;
-import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
-import com.example.finalyearprojecta.ocr.LabReportActivity;
-import com.example.finalyearprojecta.prescription.Prescription;
-import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
-import com.example.finalyearprojecta.webv.WebViewActivity;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.finalyearprojecta.fregment.Assistant;
+import com.example.finalyearprojecta.fregment.HomeFragment;
+import com.example.finalyearprojecta.fregment.Profile;
+import com.example.finalyearprojecta.fregment.Record;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    DrawerLayout drawerLayout;
-    ImageView  cProfile, bg_icon, leftProfile;
-    CardView mHistory;
-    ImageButton btnMenu;
-    TextView appointment, logoutBtn, nameText,viewProfile;
-    Button scanImageBtn, aboutBtn;
-    LinearLayout option1, option2, option3, option4, medicalHistory,reportAnalysis, prescMng;
-    FirebaseAuth fAuth;
-    FirebaseFirestore db;
-    String currentUserId;
+public class MainActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // 🔐 CHECK IF USER IS LOGGED IN
-        fAuth = FirebaseAuth.getInstance();
-        if (fAuth.getCurrentUser() == null) {
-            // User not logged in, redirect to LoginActivity
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-            return;
-        }
         setContentView(R.layout.activity_main);
 
-        // INIT VIEWS
-        drawerLayout = findViewById(R.id.drawerLayout);
-        btnMenu = findViewById(R.id.btn_menu);
-        appointment = findViewById(R.id.appointment);
-        scanImageBtn = findViewById(R.id.scan_btn);
-        aboutBtn = findViewById(R.id.btn_about);
-        logoutBtn = findViewById(R.id.btn_loout);
-        cProfile = findViewById(R.id.profile);
-        bg_icon = findViewById(R.id.bgIcon);
-        nameText = findViewById(R.id.name_text);
-        leftProfile = findViewById(R.id.left_profile);
-        medicalHistory = findViewById(R.id.medical_history_view);
-        reportAnalysis = findViewById(R.id.report_analysis_view);
-        mHistory = findViewById(R.id.historyCard);
-        viewProfile = findViewById(R.id.profile_viewers);
-        prescMng = findViewById(R.id.Prescs_mng);
+        bottomNav = findViewById(R.id.bottom_nav);
 
-        bg_icon.setVisibility(View.GONE);
+        // Default fragment (Home)
+        loadFragment(new HomeFragment());
 
-        String role = getIntent().getStringExtra("role");
+        bottomNav.setOnItemSelectedListener(item -> {
 
-        fAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        currentUserId = fAuth.getUid();
+            Fragment selectedFragment = null;
 
-        db.collection("User").document(currentUserId).
-                get().addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
+            int itemId = item.getItemId();
 
-                        String name = documentSnapshot.getString("FullName");
-                        String uniqueId = documentSnapshot.getString("uniqueId");
-                        nameText.setText(name);
+            if (itemId == R.id.home) {
+                selectedFragment = new HomeFragment();
 
-                        viewProfile.setOnClickListener(v -> {
-                            Intent intent = new Intent(MainActivity.this, ProfileViewersActivity.class);
-                            intent.putExtra("uniqueId", uniqueId);
-                            startActivity(intent);
-                        });
-                    }
+            } else if (itemId == R.id.records) {
+                selectedFragment = new Record();
 
-                }).addOnFailureListener(e ->{
-                    Toast.makeText(this, "Failed to load name", Toast.LENGTH_SHORT).show();
-                });
+            } else if (itemId == R.id.assistant) {
+                selectedFragment = new Assistant();
 
-        if ("lab".equalsIgnoreCase(role)) {
-            bg_icon.setVisibility(View.VISIBLE);
-            mHistory.setVisibility(View.GONE);
-        }
-        if("doctor".equalsIgnoreCase(role)){
-            mHistory.setVisibility(View.GONE);
-        }
-        else {
-            bg_icon.setVisibility(View.GONE);
-        }
-
-        //Four Card
-        option1 = findViewById(R.id.option_layout_1);
-        option2 = findViewById(R.id.option_layout_2);
-        option3 = findViewById(R.id.option_layout_3);
-        option4 = findViewById(R.id.option_layout_4);
-
-        // SET CLICK LISTENERS
-        btnMenu.setOnClickListener(this);
-        appointment.setOnClickListener(this);
-        scanImageBtn.setOnClickListener(this);
-        aboutBtn.setOnClickListener(this);
-        logoutBtn.setOnClickListener(this);
-        cProfile.setOnClickListener(this);
-        leftProfile.setOnClickListener(this);
-
-        // set click on four card
-        option1.setOnClickListener(this);
-        option2.setOnClickListener(this);
-        option3.setOnClickListener(this);
-        option4.setOnClickListener(this);
-        medicalHistory.setOnClickListener(this);
-        reportAnalysis.setOnClickListener(this);
-        prescMng.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-
-        if (id == R.id.btn_menu) {
-            drawerLayout.openDrawer(GravityCompat.START);
-
-        } else if (id == R.id.appointment) {
-            startActivity(new Intent(this, AppointmentActivity.class));
-            drawerLayout.closeDrawer(GravityCompat.START);
-
-        } else if (id == R.id.scan_btn) {
-            startActivity(new Intent(this, Scan_Image.class));
-
-        } else if (id == R.id.btn_about) {
-            BottomSheetDialog dialog = new BottomSheetDialog(this);
-            View view = getLayoutInflater().inflate(R.layout.bottom_sheet_about, null);
-            dialog.setContentView(view);
-            dialog.show();
-
-        } else if (id == R.id.profile) {
-            startActivity(new Intent(this, Profile_Activity.class));
-
-        } else if (id == R.id.medical_history_view) {
-            startActivity(new Intent(this, MedicalHistoryActivity.class));
-
-        } else if (id == R.id.report_analysis_view) {
-            startActivity(new Intent(this, LabReportActivity.class));
-
-        } else if (id == R.id.Prescs_mng) {
-            startActivity(new Intent(this, ChatActivity.class));
-
-        } else if (id == R.id.option_layout_1) {
-
-            String role = getIntent().getStringExtra("role");
-
-            if ("lab".equalsIgnoreCase(role)) {
-                Toast.makeText(this,
-                        "Access denied. You are not eligible to get access",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                startActivity(new Intent(this, View_Report.class));
+            } else if (itemId == R.id.settings) {
+                selectedFragment = new Profile();
             }
 
-        } else if (id == R.id.option_layout_2) {
-            Intent intent = new Intent(MainActivity.this, Upload_Report.class);
-            intent.putExtra("role", getIntent().getStringExtra("role"));
-            startActivity(intent);
-
-        }else if (id == R.id.option_layout_4) {
-            Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-            intent.putExtra("role", getIntent().getStringExtra("role"));
-            startActivity(intent);
-
-        }else if (id == R.id.option_layout_3) {
-            Intent intent = new Intent(MainActivity.this, Prescription.class);
-            intent.putExtra("role", getIntent().getStringExtra("role"));
-            startActivity(intent);
-
-        } else if (id == R.id.left_profile) {
-            Intent intent = new Intent(MainActivity.this, Profile_Activity.class);
-            startActivity(intent);
-
-            drawerLayout.closeDrawer(GravityCompat.START); // close left bar
-
-        } else if (id == R.id.btn_loout) {
-            logout(v);
-        }
+            return loadFragment(selectedFragment);
+        });
     }
 
-    // 🚪 LOGOUT METHOD
-    public void logout(View view) {
-        // Sign out from Firebase
-        FirebaseAuth.getInstance().signOut();
-
-        // Go to LoginActivity and clear back stack
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-
-        // Finish MainActivity
-        finish();
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }

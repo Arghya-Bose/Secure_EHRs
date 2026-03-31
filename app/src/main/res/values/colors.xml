@@ -14,4 +14,13 @@
     <color name="red">#FF0000</color>
 
     <color name="sblack">#808080</color>
+
+
+    <color name="health_green_dark">#064D3B</color>
+    <color name="health_green_primary">#2EB086</color>
+    <color name="health_bg_mint">#E8F9F1</color>
+
+    <color name="uiWhite">#E6FFED</color>
+
+
 </resources>

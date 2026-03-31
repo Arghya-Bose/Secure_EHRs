@@ -6,13 +6,12 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalyearprojecta.LoginActivity;
@@ -39,9 +38,9 @@ public class SplashActivity extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
 
-        checkInternetAndProceed();
-
         retryButton.setOnClickListener(v -> checkInternetAndProceed());
+
+        checkInternetAndProceed();
     }
 
     private void checkInternetAndProceed() {
@@ -52,17 +51,18 @@ public class SplashActivity extends AppCompatActivity {
             retryButton.setVisibility(View.GONE);
             statusText.setText("Checking session...");
 
-            new Handler().postDelayed(() -> {
+            // small delay for UX (optional)
+            new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
 
                 if (fAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(this, MainActivity.class));
                 } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
 
                 finish();
 
-            }, 1500);
+            }, 800); // reduced delay 🔥
 
         } else {
 
@@ -74,18 +74,18 @@ public class SplashActivity extends AppCompatActivity {
 
     private boolean isInternetAvailable() {
 
-        ConnectivityManager connectivityManager =
+        ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (connectivityManager == null) return false;
+        if (cm == null) return false;
 
-        Network network = connectivityManager.getActiveNetwork();
+        Network network = cm.getActiveNetwork();
         if (network == null) return false;
 
-        NetworkCapabilities capabilities =
-                connectivityManager.getNetworkCapabilities(network);
+        NetworkCapabilities cap = cm.getNetworkCapabilities(network);
 
-        return capabilities != null &&
-                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+        return cap != null &&
+                cap.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                cap.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED); // 🔥 important
     }
 }

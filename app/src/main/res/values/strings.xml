@@ -5,4 +5,6 @@
     <string name="about_app">
 Cloud-Based Secure Electronic Health Record (EHR) System is a secure and intelligent healthcare management application designed to store and manage medical data safely in the cloud. The app provides role-based access for Patients, Doctors, and Lab Technicians to ensure controlled and authorized data usage.\n\nIt integrates Firebase Authentication, UID hash-based identification, biometric verification, and screenshot and screen-record restriction to maintain high-level data security and privacy.\n\nThe system also includes AI-powered medical report analysis using Machine Learning and TensorFlow Lite, along with an AI chatbot for healthcare assistance.
 </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

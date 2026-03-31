@@ -3,6 +3,8 @@
     <style name="Base.Theme.FinalyearProjectA" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">#A9D6C4</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="Theme.FinalyearProjectA" parent="Base.Theme.FinalyearProjectA" />
