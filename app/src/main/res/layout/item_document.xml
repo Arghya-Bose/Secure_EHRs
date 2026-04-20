@@ -4,77 +4,112 @@
     android:id="@+id/fileCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="10dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="13dp"
-    app:cardElevation="6dp"
-    app:cardBackgroundColor="#E3F2FD"
-    app:rippleColor="#1E88E5">
+    app:cardCornerRadius="28dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#F3F7F5"
+    app:rippleColor="#D7EFE5">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="14dp"
         android:orientation="horizontal"
+        android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- File Icon -->
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_file"
-            android:tint="#43A047" />
+        <!-- LEFT ICON CIRCLE -->
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_icon_circle"
+            android:gravity="center">
 
-        <!-- Text Section -->
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_file"
+                android:tint="#0E6B4D"/>
+        </LinearLayout>
+
+        <!-- TEXT CONTENT -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_weight="1"
+            android:layout_marginStart="14dp"
             android:orientation="vertical">
 
-            <!-- File Name -->
+            <!-- TITLE -->
             <TextView
                 android:id="@+id/fileNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blood_Test_Report.pdf"
-                android:textSize="16sp"
+                android:text="Annual Physical Panel"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#1F2933" />
+                android:textColor="#003A2C"/>
 
-            <!-- Uploaded By -->
+            <!-- SUBTITLE -->
             <TextView
-                android:id="@+id/uploadedByText"
+                android:id="@+id/feedbackText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Uploaded by Dr. Sharma"
+                android:text="Comprehensive blood work and metabolic profile"
                 android:textSize="13sp"
-                android:textColor="#6B7280" />
+                android:textColor="#326957"/>
 
-            <!-- Feedback -->
-            <TextView
-                android:id="@+id/feedbackText"
-                android:layout_width="match_parent"
+            <!-- TAGS -->
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="#444"
-                android:textSize="13sp"
-                android:lineSpacingExtra="2dp" />
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
 
+                <TextView
+                    android:id="@+id/uploadedByText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DR. SARAH MITCHELL"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D5B"
+                    android:background="@drawable/bg_chip"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CITY GENERAL LABS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D5B"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_chip"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"/>
+            </LinearLayout>
+
+            <!-- DATE -->
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oct 14"
+                android:textSize="13sp"
+                android:textColor="#003A2C"
+                android:layout_marginTop="10dp"/>
         </LinearLayout>
 
-        <!-- Date -->
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="#6B7280"
-            android:layout_marginTop="2dp"/>
-
+        <!-- RIGHT ARROW -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_right"
+            android:tint="#8FBFA7"/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

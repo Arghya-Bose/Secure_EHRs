@@ -66,10 +66,9 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tvName"
+                    android:id="@+id/tvName_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Alex Chen"
                     android:textColor="#006D47"
                     android:textSize="25sp"
                     android:textStyle="bold"/>
@@ -131,13 +130,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Start Scan"
                             android:textAllCaps="false"
                             android:textColor="#006D47"
                             android:backgroundTint="@android:color/white"
                             app:cornerRadius="20dp"
                             app:icon="@drawable/ic_arrow_forward"
                             app:iconGravity="textEnd"
+                            android:text="Start Scan"
                             android:clickable="true"
                             android:focusable="true"
                             android:foreground="?attr/selectableItemBackground"
@@ -612,6 +611,9 @@
         android:elevation="8dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/left_profile"
             android:layout_width="72dp"
             android:layout_height="72dp"
@@ -622,28 +624,45 @@
             android:layout_marginBottom="16dp" />
 
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/name_text"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            android:text="Empty"
+            android:layout_marginBottom="24dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
         <!-- MENU ITEMS -->
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/dashboard"
             android:text="Dashboard"
             android:textSize="16sp"
-            android:padding="12dp"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            android:padding="12dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/profile_viewers"
-            android:text="Profile"
+            android:text="Profile Views"
             android:textSize="16sp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:padding="12dp" />
+            android:padding="12dp"/>
 
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:text="Settings"
             android:textSize="16sp"
             android:layout_height="wrap_content"
@@ -651,19 +670,31 @@
             android:padding="12dp" />
 
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/appointment"
-            android:text="Appointment" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            android:text="Appointment"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/btn_about"
             android:text="About App"
             android:textSize="16sp"
             android:padding="12dp"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textColor="@color/red" />
+            android:layout_width="wrap_content"/>
 
         <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/btn_loout"
             android:text="Logout"
             android:textSize="16sp"

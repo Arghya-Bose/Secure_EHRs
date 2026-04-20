@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6FA">
+    android:background="#D6FCEC">
 
     <!-- ================= TOP BAR ================= -->
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:background="@color/white"
+        android:background="#D6FCEC"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

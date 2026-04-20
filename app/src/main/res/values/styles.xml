@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="chip">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/bg_chip</item>
+    </style>
+
+    <style name="chip_active">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/bg_chip_active</item>
+    </style>
+</resources>
+

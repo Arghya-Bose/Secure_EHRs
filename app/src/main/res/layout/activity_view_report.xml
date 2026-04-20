@@ -1,173 +1,263 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F7FA"> <!-- light background -->
+    android:background="#D6FCEC">
 
+    <!-- TOP BAR -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/white"
+        android:layout_height="56dp"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp">
 
-        <ImageButton
+        <ImageView
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:id="@+id/btn_back_view"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_back" />
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="View Report"
-            android:textSize="20sp"
+            android:layout_weight="1"
+            android:text="Medical Reports"
             android:textStyle="bold"
-            android:layout_marginStart="12dp" />
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#003A2C"/>
     </LinearLayout>
 
-    <!-- Search Bar -->
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="15dp"
-        android:id="@+id/search_layout"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@drawable/search_background_1"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:gravity="center_vertical">
-
-        <EditText
-            android:id="@+id/patientUniqueIdEditText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:hint="Search by UID"
-            android:inputType="textEmailAddress"
-            android:background="@android:color/transparent"
-            android:padding="8dp"
-            android:textColor="#1D3557"
-            android:textColorHint="#6C757D" />
-
-        <ImageView
-            android:id="@+id/fetchBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_search"
-            android:contentDescription="Search"
-            app:tint="#2A9D8F" />
-        <ImageView
-            android:id="@+id/scanQrBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_qr_scan"
-            android:contentDescription="Scan QR"
-            app:tint="#457B9D"
-            android:padding="6dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginHorizontal="7dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:gravity="center_vertical"
-        android:weightSum="2">
-
-        <!-- Category Dropdown -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:boxStrokeColor="#2A9D8F"
-            android:layout_marginEnd="8dp"
-            android:hint="Category"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="dropdown_menu">
-
-            <AutoCompleteTextView
-                android:id="@+id/categoryDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:textSize="12dp"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:padding="12dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Subcategory Dropdown -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:boxStrokeColor="#2A9D8F"
-            android:layout_marginStart="8dp"
-            android:hint="Sub Category"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="dropdown_menu">
-
-            <AutoCompleteTextView
-                android:id="@+id/subCategoryDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:inputType="none"
-                android:textSize="12dp"
-                android:focusable="false"
-                android:clickable="true"
-                android:padding="12dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-
-
-
-    <!-- SubCategory Dropdown -->
-
-    <TextView
-        android:id="@+id/emptyText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No Report available"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:visibility="gone"
-        android:padding="16dp"/>
-
-
-
-    <!-- RecyclerView -->
-    <FrameLayout
+    <!-- SCROLL -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginHorizontal="15dp"
-            android:id="@+id/recyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <ProgressBar
-            android:id="@+id/view_progress"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-    </FrameLayout>
+            <!-- HEADER -->
+            <TextView
+                android:text="SECURE ARCHIVES"
+                android:textColor="#006D47"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Your Health \nRecords."
+                android:textColor="#003A2C"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"/>
+
+            <!-- PRIVACY CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_light_green_round"
+                android:gravity="center_vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/security_sld"/>
+
+                <LinearLayout
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Privacy Status"
+                        android:textSize="12sp"
+                        android:textColor="#5A8F76"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="HealthLock Active"
+                        android:textStyle="bold"
+                        android:textColor="#003A2C"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- SEARCH -->
+            <LinearLayout
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_search"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp">
+
+                <EditText
+                    android:id="@+id/patientUniqueIdEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Search records..."
+                    android:background="@null"
+                    android:paddingStart="8dp"/>
+
+                <ImageView
+                    android:id="@+id/scanQrBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_qr_scan"/>
+
+                <ImageView
+                    android:id="@+id/fetchBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search"
+                    android:contentDescription="Search"
+                    app:tint="#2A9D8F" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginHorizontal="7dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:weightSum="2">
+
+                <!-- Category Dropdown -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:boxStrokeColor="#2A9D8F"
+                    android:layout_marginEnd="8dp"
+                    android:hint="Category"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="dropdown_menu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/categoryDropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:textSize="12dp"
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Subcategory Dropdown -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:boxStrokeColor="#2A9D8F"
+                    android:layout_marginStart="8dp"
+                    android:hint="Sub Category"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="dropdown_menu">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/subCategoryDropdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:inputType="none"
+                        android:textSize="12dp"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/emptyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Report available"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:padding="16dp"/>
 
 
+            <!-- SECTION -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="OCTOBER 2023"
+                android:textColor="#5A8F76"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"/>
+
+            <!-- CARD 1 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ProgressBar
+                    android:id="@+id/view_progress"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+
+            <!-- GREEN CARD -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_dark_green"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Missing something?"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Upload old records easily"
+                    android:textColor="#CCFFFFFF"
+                    android:layout_marginTop="8dp"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Learn How"
+                    android:layout_marginTop="12dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

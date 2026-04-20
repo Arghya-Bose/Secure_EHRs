@@ -26,10 +26,10 @@ public class Upload_Report extends AppCompatActivity {
     // ================= UI =================
     EditText patientUniqueIdEditText, detailEditText;
     TextView selectedFileText, uidTextView;
-    Button chooseBtn, uploadBtn;
+    Button uploadBtn;
+    LinearLayout chooseBtn_1, chooseBtn_2;
     ImageButton btnBack;
     ProgressBar progressBar;
-
     // 🔥 NEW
     AutoCompleteTextView categoryDropdown, subCategoryDropdown;
     String selectedCategory = "";
@@ -53,7 +53,8 @@ public class Upload_Report extends AppCompatActivity {
         patientUniqueIdEditText = findViewById(R.id.patientUniqueIdEditText);
         detailEditText = findViewById(R.id.detail_edit_text);
         selectedFileText = findViewById(R.id.selectedFileText);
-        chooseBtn = findViewById(R.id.chooseBtn);
+        chooseBtn_1 = findViewById(R.id.chose_btn_1);
+        chooseBtn_2 = findViewById(R.id.chose_btn_2);
         uploadBtn = findViewById(R.id.uploadBtn);
         btnBack = findViewById(R.id.btn_back_view);
         uidTextView = findViewById(R.id.uidText);
@@ -143,7 +144,8 @@ public class Upload_Report extends AppCompatActivity {
         });
 
         // ================= BUTTONS =================
-        chooseBtn.setOnClickListener(v -> chooseFile());
+        chooseBtn_1.setOnClickListener(v -> chooseFile());
+        chooseBtn_2.setOnClickListener(v -> chooseFile());
         uploadBtn.setOnClickListener(v -> startUpload());
         btnBack.setOnClickListener(v -> finish());
 

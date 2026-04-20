@@ -22,7 +22,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     DrawerLayout drawerLayout;
     ImageView cProfile, bg_icon, leftProfile;
     ImageButton btnMenu;
-    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn;
+    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn, NameText;
     Button scanImageBtn;
     LinearLayout option1, option2, option3, option4, medicalHistory, reportAnalysis, prescMng, mHistory;
     FirebaseAuth fAuth;
@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         cProfile = view.findViewById(R.id.profile);
         bg_icon = view.findViewById(R.id.bgIcon);
         nameText = view.findViewById(R.id.name_text);
+        NameText = view.findViewById(R.id.tvName_home);
         leftProfile = view.findViewById(R.id.left_profile);
         medicalHistory = view.findViewById(R.id.medical_history_view);
         viewProfile = view.findViewById(R.id.profile_viewers);
@@ -124,6 +125,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         medicalHistory.setOnClickListener(this);
         reportAnalysis.setOnClickListener(this);
         prescMng.setOnClickListener(this);
+        mHistory.setOnClickListener(this);
+
+        db.collection("User").document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        NameText.setText(doc.getString("FullName"));
+                    }
+                });
+
+
         return view;
     }
 
@@ -181,6 +193,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         } else if (id == R.id.option_layout_4) {
             Intent intent = new Intent(getContext(), WebViewActivity.class);
+            intent.putExtra("role", role);
+            startActivity(intent);
+
+        }else if (id == R.id.historyCard) {
+            Intent intent = new Intent(getContext(), MedicalHistoryActivity.class);
             intent.putExtra("role", role);
             startActivity(intent);
 

@@ -1,66 +1,311 @@
 package com.example.finalyearprojecta.fregment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.*;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.finalyearprojecta.LoginActivity;
 import com.example.finalyearprojecta.R;
+import com.example.finalyearprojecta.databinding.FragmentProfileBinding;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.zxing.BarcodeFormat;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Profile#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
 public class Profile extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FragmentProfileBinding binding;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FirebaseAuth auth;
+    FirebaseFirestore db, secondFirestore;
+    String currentUserId;
 
-    public Profile() {
-        // Required empty public constructor
-    }
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Profile.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Profile newInstance(String param1, String param2) {
-        Profile fragment = new Profile();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    Uri imageUri;
+
+    // ✅ Modern Image Picker (Fragment Safe)
+    ActivityResultLauncher<String> imagePicker =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                if (uri != null) {
+                    imageUri = uri;
+                    binding.profileImg.setImageURI(uri);
+                    uploadImageToSecondFirestore(uri);
+                }
+            });
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        currentUserId = auth.getUid();
+
+        binding.editProfile.setOnClickListener(v -> openEditBottomSheet());
+        binding.viewProfileDetail.setOnClickListener(v -> openViewBottomSheet());
+
+
+        if (currentUserId == null) return;
+
+        // 🔥 Fetch Data
+        db.collection("User").document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        binding.tvUniqueId.setText(doc.getString("uniqueId"));
+                        binding.tvName.setText(doc.getString("FullName"));
+                        binding.tvEmail.setText(doc.getString("UserEmail"));
+                    }
+                });
+
+        // 📋 Copy UID
+        binding.btnCopyUid.setOnClickListener(v -> {
+            String uid = binding.tvUniqueId.getText().toString().trim();
+            ClipboardManager clipboard =
+                    (ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("UID", uid));
+            Toast.makeText(getContext(), "Copied", Toast.LENGTH_SHORT).show();
+        });
+
+        setupBiometric();
+
+        binding.qrCodeTv.setOnClickListener(v ->
+                biometricPrompt.authenticate(promptInfo)
+        );
+
+        // 🔥 SECOND FIREBASE
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setApiKey("AIzaSyBRCHYvnSUWqQTW3ZCKJAQBDO6_e1Xh2Ss")
+                .setApplicationId("1:654325754:android:fd4258dd800897e4055643")
+                .setProjectId("multiscreenapp-27573")
+                .build();
+
+        FirebaseApp secondApp;
+        try {
+            secondApp = FirebaseApp.initializeApp(requireContext(), options, "secondApp");
+        } catch (Exception e) {
+            secondApp = FirebaseApp.getInstance("secondApp");
+        }
+
+        secondFirestore = FirebaseFirestore.getInstance(secondApp);
+
+        binding.picImageToProfile.setOnClickListener(v ->
+                imagePicker.launch("image/*")
+        );
+
+        fetchProfileImage();
+
+        binding.logoutProfile.setOnClickListener(V -> logout());
+
+    }
+
+    // ================= BIOMETRIC =================
+    private void setupBiometric() {
+
+        Executor executor = ContextCompat.getMainExecutor(requireContext());
+
+        biometricPrompt = new BiometricPrompt(
+                this,
+                executor,
+                new BiometricPrompt.AuthenticationCallback() {
+
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult result) {
+                        showSecureQr();
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        Toast.makeText(getContext(),
+                                "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Verify Identity")
+                .setSubtitle("View QR")
+                .setDeviceCredentialAllowed(true)
+                .build();
+    }
+
+    private void showSecureQr() {
+
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        View view = getLayoutInflater().inflate(R.layout.qr_page, null);
+
+        ImageView qr = view.findViewById(R.id.qrImage);
+
+        try {
+            String uid = binding.tvUniqueId.getText().toString();
+
+            BarcodeEncoder encoder = new BarcodeEncoder();
+            Bitmap bitmap = encoder.encodeBitmap(
+                    uid,
+                    BarcodeFormat.QR_CODE,
+                    400,
+                    400
+            );
+
+            qr.setImageBitmap(bitmap);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    // ================= EDIT =================
+    private void openEditBottomSheet() {
+
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        View view = getLayoutInflater()
+                .inflate(R.layout.edit_profile_bottom, null);
+
+        EditText etAge = view.findViewById(R.id.etAge);
+        Button btnSave = view.findViewById(R.id.btnSaveProfile);
+
+        btnSave.setOnClickListener(v -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("age", etAge.getText().toString());
+
+            db.collection("User")
+                    .document(currentUserId)
+                    .update(map)
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(getContext(),
+                                "Updated", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    });
+        });
+
+
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    // ================= VIEW =================
+    private void openViewBottomSheet() {
+
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        View view = getLayoutInflater()
+                .inflate(R.layout.view_profile_bottom, null);
+
+        TextView tv = view.findViewById(R.id.tvAllDetails);
+
+        db.collection("User").document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        tv.setText("Name: " + doc.getString("FullName"));
+                    }
+                });
+
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    // ================= IMAGE =================
+    private String imageToBase64(Uri uri) {
+        try {
+            InputStream inputStream =
+                    requireContext().getContentResolver().openInputStream(uri);
+
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+
+            return Base64.encodeToString(
+                    baos.toByteArray(),
+                    Base64.DEFAULT
+            );
+
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+    private void uploadImageToSecondFirestore(Uri uri) {
+
+        String base64 = imageToBase64(uri);
+        if (base64 == null) return;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("profileImage", base64);
+
+        secondFirestore.collection("users")
+                .document(currentUserId)
+                .set(map);
+    }
+
+    private void fetchProfileImage() {
+
+        secondFirestore.collection("users")
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    String base64 = doc.getString("profileImage");
+
+                    if (base64 != null) {
+                        byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+                        Bitmap bitmap =
+                                BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                        binding.profileImg.setImageBitmap(bitmap);
+                    }
+                });
+    }
+
+    private void logout() {
+        FirebaseAuth.getInstance().signOut();
+
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        requireActivity().finish();
     }
 }

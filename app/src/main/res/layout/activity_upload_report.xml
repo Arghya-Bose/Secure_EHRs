@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F7FA">
+    android:background="#D6FCEC">
 
-    <!-- ================= TOP BAR (FIXED) ================= -->
+    <!-- TOP BAR -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/white"
+        android:layout_height="45dp"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp">
 
         <ImageButton
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/btn_back_view"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_back" />
+            android:src="@drawable/ic_arrow_back"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Upload Report"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginStart="12dp" />
+            android:textColor="#003A2C"/>
+
+
     </LinearLayout>
 
-    <!-- ================= SCROLLABLE CONTENT ================= -->
+    <!-- SCROLL -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,18 +45,91 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Card -->
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardScan"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="48dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:background="@drawable/gradient_green_card">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OCR technology"
+                        android:textColor="@color/uiWhite"
+                        android:textSize="16sp"
+                        android:drawableStart="@drawable/ic_qr_scan_1"
+                        android:drawablePadding="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Scan Document"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Digitize physical medical reports instantly using \nAI-powered OCR technology."
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="12sp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/scan_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Start Scanning"
+                        android:textAllCaps="false"
+                        android:textColor="#006D47"
+                        android:backgroundTint="@android:color/white"
+                        app:cornerRadius="20dp"
+                        app:icon="@drawable/ic_arrow_forward"
+                        app:iconGravity="textEnd"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:iconTint="#0B4D2C"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Secure clinical document encryption."
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:textColor="#003A2C"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- MAIN CARD -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="32dp"
+                app:cardElevation="2dp"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@drawable/bg_quick_item">
 
                     <!-- Patient UID -->
                     <TextView
@@ -65,155 +137,206 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Patient UID"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textColor="#003A2C"
+                        android:textStyle="bold"/>
 
                     <EditText
-                        android:padding="6dp"
-                        android:textSize="15dp"
                         android:id="@+id/patientUniqueIdEditText"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/green_input_bg"
                         android:hint="Enter patient UID"
-                        android:background="@drawable/search_background_1"
-                        android:layout_marginTop="6dp" />
+                        android:padding="12dp"/>
 
-                    <!-- ================= CATEGORY SECTION ================= -->
-
+                    <!-- CATEGORY -->
                     <LinearLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:orientation="horizontal"
-                        android:padding="6dp"
-                        android:gravity="center_vertical"
                         android:weightSum="2">
 
-                        <!-- Category Dropdown -->
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
-                            android:hint="Category"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            app:endIconMode="dropdown_menu">
+                            app:endIconMode="dropdown_menu"
+                            android:hint="Category">
 
                             <AutoCompleteTextView
                                 android:id="@+id/categoryDropdown"
                                 android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:textSize="12dp"
-                                android:inputType="none"
-                                android:focusable="false"
-                                android:clickable="true"
-                                android:padding="12dp"/>
+                                android:layout_height="48dp"
+                                android:paddingLeft="6dp"
+                                android:inputType="none"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Subcategory Dropdown -->
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:hint="Sub Category"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            app:endIconMode="dropdown_menu">
+                            app:endIconMode="dropdown_menu"
+                            android:hint="Sub Category">
 
                             <AutoCompleteTextView
                                 android:id="@+id/subCategoryDropdown"
                                 android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:textSize="12dp"
-                                android:inputType="none"
-                                android:focusable="false"
-                                android:clickable="true"
-                                android:padding="12dp"/>
+                                android:layout_height="48dp"
+                                android:paddingLeft="6dp"
+                                android:inputType="none"/>
                         </com.google.android.material.textfield.TextInputLayout>
-
                     </LinearLayout>
 
+                    <!-- ATTACHMENT -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Attachment"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"/>
 
-
-
-
-                    <!-- Upload Box -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        android:layout_marginTop="20dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/bg_dashed_upload">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
 
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/ic_upload"
-                            android:tint="#444444" />
+                        <!-- Gallery -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="130dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:cardCornerRadius="28dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Select Your File"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp" />
+                            <LinearLayout
+                                android:id="@+id/chose_btn_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/chooseBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:backgroundTint="#7CFF7C"
-                            android:textColor="#2E7D32"
-                            android:text="Browse File" />
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/galary"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="Upload from\nGallery"
+                                    android:gravity="center"
+                                    android:textColor="#003A2C"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Files -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="0dp"
+                            android:layout_height="130dp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="28dp">
+
+                            <LinearLayout
+                                android:id="@+id/chose_btn_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground">
+
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_file"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="Choose from\nFiles"
+                                    android:gravity="center"
+                                    android:textColor="#003A2C"/>
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
                     </LinearLayout>
 
-                    <!-- Selected File -->
+                    <!-- FILE TEXT -->
                     <TextView
                         android:id="@+id/selectedFileText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="No file selected"
-                        android:textSize="13sp"
-                        android:textColor="#666666"
-                        android:layout_marginTop="10dp"
-                        android:maxLines="1"
-                        android:ellipsize="end" />
+                        android:textSize="12sp"
+                        android:textColor="#5A8F76"
+                        android:layout_marginTop="8dp"/>
 
-                    <!-- Feedback -->
+                    <!-- FEEDBACK -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Feedback"
+                        android:layout_marginTop="12dp"/>
+
                     <EditText
-                        android:padding="6dp"
                         android:id="@+id/detail_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/search_background_1"
-                        android:hint="Write the feedback......" />
-
-                    <!-- Upload Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/uploadBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:backgroundTint="#7CFF7C"
-                        android:textColor="#2E7D32"
-                        android:text="Upload Report" />
-
-                    <!-- Progress -->
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        android:layout_width="24dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="12dp"
-                        android:visibility="gone" />
+                        android:background="@drawable/green_input_bg"
+                        android:hint="Write the feedback..."
+                        android:padding="12dp"
+                        android:layout_marginTop="6dp"/>
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
+            <!-- TOGGLE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_toggle"
+                android:gravity="center_vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Enable Vault Encryption"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- UPLOAD BUTTON -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uploadBtn"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:text="Upload Report"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#0B8F5A"
+                app:cornerRadius="30dp"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>
