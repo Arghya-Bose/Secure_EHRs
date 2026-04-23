@@ -624,9 +624,6 @@
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:id="@+id/name_text"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -641,33 +638,12 @@
             android:foreground="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:id="@+id/dashboard"
-            android:text="Dashboard"
-            android:textSize="16sp"
-            android:padding="12dp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
-
-        <TextView
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:id="@+id/profile_viewers"
             android:text="Profile Views"
             android:textSize="16sp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:padding="12dp"/>
-
-        <TextView
-            android:foreground="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="Settings"
-            android:textSize="16sp"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:padding="12dp" />
 
         <TextView
             android:foreground="?attr/selectableItemBackground"

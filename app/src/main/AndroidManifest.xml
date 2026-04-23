@@ -11,8 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalyearProjectA">
-
-        <activity android:name=".appointment.AppointmentActivity"
+        <activity
+            android:name=".OCRHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".appointment.AppointmentActivity"
             android:exported="false" />
         <activity
             android:name=".prescription.Prescription"
@@ -57,9 +60,7 @@
         <activity
             android:name=".View_Report"
             android:exported="false" />
-        <activity
-            android:name=".Profile_Activity"
-            android:exported="false" />
+
         <activity
             android:name=".Scan_Image"
             android:exported="false" />

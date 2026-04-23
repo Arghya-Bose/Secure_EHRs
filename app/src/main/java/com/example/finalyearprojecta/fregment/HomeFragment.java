@@ -14,6 +14,7 @@ import com.example.finalyearprojecta.ocr.LabReportActivity;
 import com.example.finalyearprojecta.prescription.Prescription;
 import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
 import com.example.finalyearprojecta.webv.WebViewActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -161,7 +162,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             dialog.show();
 
         } else if (id == R.id.profile || id == R.id.left_profile) {
-            startActivity(new Intent(getContext(), Profile_Activity.class));
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, new Profile())
+                    .commit();
+            BottomNavigationView bottomNav =
+                    requireActivity().findViewById(R.id.bottom_nav);
+            bottomNav.setSelectedItemId(R.id.settings);
+
 
         } else if (id == R.id.medical_history_view) {
             startActivity(new Intent(getContext(), MedicalHistoryActivity.class));
