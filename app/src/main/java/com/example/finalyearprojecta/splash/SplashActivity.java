@@ -11,9 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.finalyearprojecta.LoginActivity;
 import com.example.finalyearprojecta.MainActivity;
 import com.example.finalyearprojecta.R;
@@ -49,20 +47,36 @@ public class SplashActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.VISIBLE);
             retryButton.setVisibility(View.GONE);
-            statusText.setText("Checking session...");
+            statusText.setText("Establishing secure link...");
 
-            // small delay for UX (optional)
-            new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
+            progressBar.setProgress(0);
 
-                if (fAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(this, MainActivity.class));
-                } else {
-                    startActivity(new Intent(this, LoginActivity.class));
+            android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
+
+            Runnable runnable = new Runnable() {
+                int progress = 0;
+
+                @Override
+                public void run() {
+                    progress += 10;
+                    progressBar.setProgress(progress);
+
+                    if (progress < 100) {
+                        handler.postDelayed(this, 100);
+                    } else {
+
+                        if (fAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        } else {
+                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                        }
+
+                        finish();
+                    }
                 }
+            };
 
-                finish();
-
-            }, 800); // reduced delay 🔥
+            handler.post(runnable);
 
         } else {
 

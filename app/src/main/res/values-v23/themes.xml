@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.FinalyearProjectA" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#A9D6C4</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="Theme.FinalyearProjectA" parent="Base.Theme.FinalyearProjectA" />
+</resources>

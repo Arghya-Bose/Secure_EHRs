@@ -12,6 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalyearProjectA">
         <activity
+            android:name=".notes.DoctorNotesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FinalyearProjectA" />
+        <activity
+            android:name=".notes.AddNoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".OCRHistoryActivity"
             android:exported="false" />
         <activity
@@ -60,7 +67,6 @@
         <activity
             android:name=".View_Report"
             android:exported="false" />
-
         <activity
             android:name=".Scan_Image"
             android:exported="false" />

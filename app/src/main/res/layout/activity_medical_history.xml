@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D6FCEC"
     android:orientation="vertical">
 
     <!-- 🔹 Top Bar -->
@@ -11,7 +12,6 @@
         android:layout_height="56dp"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:background="@color/white"
         android:elevation="4dp">
 
         <ImageButton
@@ -48,8 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Medical History"
-        android:backgroundTint="#7CFF7C"
-        android:textColor="#2E7D32"
+        android:backgroundTint="#0B8F5A"
         android:layout_margin="16dp"/>
 
 </LinearLayout>

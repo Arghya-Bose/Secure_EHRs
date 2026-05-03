@@ -6,14 +6,34 @@
     android:orientation="vertical"
     android:background="#D6FCEC">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:text="OCR Records"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#063A2E"/>
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/btn_back_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Scanned Reports"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#003A2C"/>
+
+
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

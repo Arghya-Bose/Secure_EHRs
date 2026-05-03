@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.util.*;
 
 public class Prescription extends AppCompatActivity {
-
     // UI
     ScrollView uploadLayout;
     LinearLayout viewLayout;
@@ -36,9 +35,7 @@ public class Prescription extends AppCompatActivity {
     ImageButton backView;
     TextView fileText;
     RecyclerView recyclerView;
-
     Uri fileUri;
-
     FirebaseAuth auth;
     FirebaseFirestore secondDb;
     FirebaseApp secondApp;

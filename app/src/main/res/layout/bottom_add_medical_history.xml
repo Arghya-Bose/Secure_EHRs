@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="#D6FCEC"
     android:padding="20dp">
 
     <!-- Drag Handle -->
@@ -17,7 +18,7 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginBottom="12dp"
-        android:src="@drawable/logomain" />
+        android:src="@drawable/logoprogress" />
 
     <EditText
         android:id="@+id/etType"
@@ -59,8 +60,7 @@
         android:id="@+id/btnSave"
         android:text="Save"
         android:layout_width="match_parent"
-        android:backgroundTint="#7CFF7C"
-        android:textColor="#2E7D32"
+        android:backgroundTint="#0B8F5A"
         android:layout_height="wrap_content"/>
 </LinearLayout>
 

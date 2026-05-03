@@ -1,0 +1,38 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:radius="16dp"
+    android:backgroundTint="#DFF3EA">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="14dp" android:layout_height="wrap_content" android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/tvDiagnosis"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#0B3D2E"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvTreatment"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvDate"
+            android:textSize="12sp"
+            android:textColor="#666"
+            android:layout_marginTop="6dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -34,6 +34,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -251,9 +252,14 @@ public class Record extends Fragment{
             return;
         }
 
+        String currentUid = FirebaseAuth.getInstance()
+                .getCurrentUser()
+                .getUid();
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("ocrtext", text);
         map.put("time", FieldValue.serverTimestamp());
+        map.put("uid", currentUid);   // important fix
 
         db.collection("MedicalReports")
                 .add(map)
@@ -263,10 +269,7 @@ public class Record extends Fragment{
                             "Saved Successfully",
                             Toast.LENGTH_SHORT).show();
 
-                    // Clear text after save
                     all_scaned_text.setText("");
-
-                    // Hide save button again
                     saveBtn.setVisibility(View.GONE);
 
                 })
@@ -280,17 +283,21 @@ public class Record extends Fragment{
 
     private void fetchData() {
 
+        String currentUid = FirebaseAuth.getInstance()
+                .getCurrentUser()
+                .getUid();
+
         db.collection("MedicalReports")
-                .orderBy("time", Query.Direction.DESCENDING)
+                .whereEqualTo("uid", currentUid)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     list.clear();
-                    list.addAll(queryDocumentSnapshots
-                            .getDocuments());
+                    list.addAll(queryDocumentSnapshots.getDocuments());
 
-                    if (list.size() > 0)
+                    if (list.size() > 0) {
                         showData(0);
+                    }
                 });
 
         saveBtn.setOnLongClickListener(v -> {

@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import com.example.finalyearprojecta.*;
 import com.example.finalyearprojecta.appointment.AppointmentActivity;
 import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
+import com.example.finalyearprojecta.notes.AddNoteActivity;
+import com.example.finalyearprojecta.notes.DoctorNotesActivity;
 import com.example.finalyearprojecta.ocr.LabReportActivity;
 import com.example.finalyearprojecta.prescription.Prescription;
 import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
@@ -23,7 +25,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     DrawerLayout drawerLayout;
     ImageView cProfile, bg_icon, leftProfile;
     ImageButton btnMenu;
-    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn, NameText;
+    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn, NameText, doctorNotes;
     Button scanImageBtn;
     LinearLayout option1, option2, option3, option4, medicalHistory, reportAnalysis, prescMng, mHistory;
     FirebaseAuth fAuth;
@@ -67,6 +69,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         reportAnalysis = view.findViewById(R.id.report_analysis_view);
         mHistory = view.findViewById(R.id.historyCard);
         aboutBtn = view.findViewById(R.id.btn_about);
+        doctorNotes = view.findViewById(R.id.doctor_notes);
 
 
         bg_icon.setVisibility(View.GONE);
@@ -100,6 +103,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             mHistory.setVisibility(View.GONE);
         } else if ("doctor".equalsIgnoreCase(role)) {
             mHistory.setVisibility(View.GONE);
+            doctorNotes.setVisibility(View.VISIBLE);
         } else {
             bg_icon.setVisibility(View.GONE);
         }
@@ -127,6 +131,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         reportAnalysis.setOnClickListener(this);
         prescMng.setOnClickListener(this);
         mHistory.setOnClickListener(this);
+        doctorNotes.setOnClickListener(this);
 
         db.collection("User").document(currentUserId)
                 .get()
@@ -151,6 +156,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         } else if (id == R.id.appointment) {
             startActivity(new Intent(getContext(), AppointmentActivity.class));
+
+        }else if (id == R.id.doctor_notes) {
+            startActivity(new Intent(getContext(), DoctorNotesActivity.class));
 
         } else if (id == R.id.scan_btn) {
             startActivity(new Intent(getContext(), Scan_Image.class));

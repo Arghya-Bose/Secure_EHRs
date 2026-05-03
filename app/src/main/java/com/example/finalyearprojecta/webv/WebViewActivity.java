@@ -16,7 +16,7 @@ public class WebViewActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     ImageButton back;
 
-    private final String URL = "https://react-healthcare-cha-l7nq.bolt.host/";
+    private final String URL = "https://healthchatehr.netlify.app/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

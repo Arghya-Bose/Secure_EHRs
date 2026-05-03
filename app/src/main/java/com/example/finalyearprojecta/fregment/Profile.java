@@ -196,49 +196,97 @@ public class Profile extends Fragment {
         dialog.show();
     }
 
-    // ================= EDIT =================
     private void openEditBottomSheet() {
 
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-        View view = getLayoutInflater()
+
+        View view = LayoutInflater.from(requireContext())
                 .inflate(R.layout.edit_profile_bottom, null);
 
         EditText etAge = view.findViewById(R.id.etAge);
+        EditText etDob = view.findViewById(R.id.etDob);
+        EditText etGender = view.findViewById(R.id.etGender);
+        EditText etBloodGroup = view.findViewById(R.id.etBloodGroup);
+        EditText etContact = view.findViewById(R.id.etContact);
+        EditText etEmergency = view.findViewById(R.id.etEmergency);
         Button btnSave = view.findViewById(R.id.btnSaveProfile);
-
-        btnSave.setOnClickListener(v -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("age", etAge.getText().toString());
-
-            db.collection("User")
-                    .document(currentUserId)
-                    .update(map)
-                    .addOnSuccessListener(unused -> {
-                        Toast.makeText(getContext(),
-                                "Updated", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    });
-        });
-
-
-        dialog.setContentView(view);
-        dialog.show();
-    }
-
-    // ================= VIEW =================
-    private void openViewBottomSheet() {
-
-        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-        View view = getLayoutInflater()
-                .inflate(R.layout.view_profile_bottom, null);
-
-        TextView tv = view.findViewById(R.id.tvAllDetails);
 
         db.collection("User").document(currentUserId)
                 .get()
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
-                        tv.setText("Name: " + doc.getString("FullName"));
+                        etAge.setText(doc.getString("age"));
+                        etDob.setText(doc.getString("dob"));
+                        etGender.setText(doc.getString("gender"));
+                        etBloodGroup.setText(doc.getString("bloodGroup"));
+                        etContact.setText(doc.getString("contact"));
+                        etEmergency.setText(doc.getString("emergencyContact"));
+                    }
+                });
+
+        btnSave.setOnClickListener(v -> {
+
+            if (currentUserId == null) {
+                Toast.makeText(requireContext(),
+                        "User not logged in",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("age", etAge.getText().toString());
+            data.put("dob", etDob.getText().toString());
+            data.put("gender", etGender.getText().toString());
+            data.put("bloodGroup", etBloodGroup.getText().toString());
+            data.put("contact", etContact.getText().toString());
+            data.put("emergencyContact", etEmergency.getText().toString());
+
+            db.collection("User")
+                    .document(currentUserId)
+                    .update(data)
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(requireContext(),
+                                "Profile Updated",
+                                Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(requireContext(),
+                                    e.getMessage(),
+                                    Toast.LENGTH_LONG).show());
+        });
+
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    private void openViewBottomSheet() {
+
+        BottomSheetDialog dialog =
+                new BottomSheetDialog(requireContext());
+
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.view_profile_bottom, null);
+
+        TextView tvAllDetails =
+                view.findViewById(R.id.tvAllDetails);
+
+        db.collection("User").document(currentUserId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+
+                        String details =
+                                "Name: " + doc.getString("FullName") + "\n\n" +
+                                        "Email: " + doc.getString("UserEmail") + "\n\n" +
+                                        "Age: " + doc.getString("age") + "\n\n" +
+                                        "DOB: " + doc.getString("dob") + "\n\n" +
+                                        "Gender: " + doc.getString("gender") + "\n\n" +
+                                        "Blood Group: " + doc.getString("bloodGroup") + "\n\n" +
+                                        "Contact: " + doc.getString("contact") + "\n\n" +
+                                        "Emergency: " + doc.getString("emergencyContact");
+
+                        tvAllDetails.setText(details);
                     }
                 });
 

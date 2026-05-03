@@ -68,4 +68,6 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:20.3.0")
 
     implementation("com.google.mlkit:text-recognition:16.0.0-beta5")
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 }

@@ -1,5 +1,7 @@
 package com.example.finalyearprojecta;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalyearprojecta.ocrimgtotext.OCRAdapter;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -19,6 +22,7 @@ public class OCRHistoryActivity extends AppCompatActivity {
     ArrayList<DocumentSnapshot> list;
     FirebaseFirestore db;
     OCRAdapter adapter;
+    ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,9 @@ public class OCRHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ocrhistory);
 
         recyclerView = findViewById(R.id.recyclerView);
+        btnBack = findViewById(R.id.btn_back_view);
+
+        btnBack.setOnClickListener(V -> finish());
 
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(this));
@@ -41,14 +48,35 @@ public class OCRHistoryActivity extends AppCompatActivity {
 
     private void fetchData() {
 
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(this,
+                    "User not logged in",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String currentUid = FirebaseAuth.getInstance()
+                .getCurrentUser()
+                .getUid();
+
         db.collection("MedicalReports")
-                .orderBy("time", Query.Direction.DESCENDING)
+                .whereEqualTo("uid", currentUid)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
                     list.clear();
                     list.addAll(queryDocumentSnapshots.getDocuments());
                     adapter.notifyDataSetChanged();
-                });
+
+                    if (list.isEmpty()) {
+                        Toast.makeText(this,
+                                "No reports found",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this,
+                                "Failed: " + e.getMessage(),
+                                Toast.LENGTH_LONG).show());
     }
 }

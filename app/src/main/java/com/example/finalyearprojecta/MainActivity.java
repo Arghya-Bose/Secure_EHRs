@@ -1,5 +1,6 @@
 package com.example.finalyearprojecta;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,5 +58,32 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Fragment currentFragment =
+                getSupportFragmentManager()
+                        .findFragmentById(R.id.frame_container);
+
+        // If current fragment is Home → ask exit confirmation
+        if (currentFragment instanceof HomeFragment) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Exit App")
+                    .setMessage("Are you sure you want to exit?")
+                    .setPositiveButton("Yes", (dialog, which) -> finish())
+                    .setNegativeButton("No", null)
+                    .show();
+
+        } else {
+
+            // Go to previous fragment
+            getSupportFragmentManager().popBackStack();
+
+            // Optional: update bottom nav selection to home
+            bottomNav.setSelectedItemId(R.id.home);
+        }
     }
 }

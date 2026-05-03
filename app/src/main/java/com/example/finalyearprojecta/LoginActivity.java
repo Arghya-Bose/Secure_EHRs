@@ -1,22 +1,18 @@
 package com.example.finalyearprojecta;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.*;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
-
     EditText emailEditText, passwordEditText;
     Button loginBtn;
     ProgressBar progressBar;
     TextView createAccountText;
-
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
 
@@ -75,15 +71,17 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(authResult -> {
 
                     String uid = fAuth.getCurrentUser().getUid();
-
                     fStore.collection("User").document(uid)
                             .get()
                             .addOnSuccessListener(doc -> {
 
                                 String role = doc.getString("role");
 
-                                Intent intent =
-                                        new Intent(LoginActivity.this, MainActivity.class);
+                                Toast.makeText(LoginActivity.this,
+                                        "Secure login successful",
+                                        Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("role", role);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                                         Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -95,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     changeInProgress(false);
                 });
+
+        Toast.makeText(this, "Secure login successful", Toast.LENGTH_SHORT).show();
     }
 
     private void goToMainActivity() {

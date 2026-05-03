@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="#D6FCEC">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp">
+
+    <ImageButton
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/btn_back_view"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_arrow_back"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Note"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#003A2C"
+        android:layout_marginStart="12dp"/>
+
+
+</LinearLayout>
+
+
+<!-- Scrollable Content -->
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <!-- Diagnosis -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Diagnosis Notes"
+            android:textStyle="bold"
+            android:textColor="#0B3D2E"
+            android:layout_marginBottom="6dp"/>
+
+        <EditText
+            android:id="@+id/etDiagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Enter diagnosis..."
+            android:padding="10dp"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Treatment -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Treatment Plan"
+            android:textStyle="bold"
+            android:textColor="#0B3D2E"
+            android:layout_marginBottom="6dp"/>
+
+        <EditText
+            android:id="@+id/etTreatment"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Enter treatment plan..."
+            android:padding="10dp"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Follow-up Date -->
+        <TextView
+            android:text="Follow-up Date"
+            android:textStyle="bold"
+            android:textColor="#0B3D2E"
+            android:layout_marginBottom="6dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <EditText
+            android:id="@+id/etDate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:focusable="false"
+            android:clickable="true"
+            android:hint="Select date"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="Save Note"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:backgroundTint="#1B7F5A"/>
+
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>
