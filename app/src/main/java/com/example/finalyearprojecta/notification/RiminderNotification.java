@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class RiminderNotification extends AppCompatActivity {
 
     EditText etMedicine;
     Button btnPickTime, btnSetReminder;
+    ImageButton back;
     TextView tvTime;
 
     int selectedHour = -1;
@@ -56,11 +58,14 @@ public class RiminderNotification extends AppCompatActivity {
         btnPickTime = findViewById(R.id.btnPickTime);
         btnSetReminder = findViewById(R.id.btnSetReminder);
         tvTime = findViewById(R.id.tvTime);
+        back = findViewById(R.id.btn_back_view);
 
         askNotificationPermission();
 
         btnPickTime.setOnClickListener(v -> openTimePicker());
         btnSetReminder.setOnClickListener(v -> setReminder());
+
+        back.setOnClickListener(V-> finish());
     }
 
     private void askNotificationPermission() {

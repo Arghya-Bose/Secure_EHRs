@@ -8,7 +8,6 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
-
 import com.example.finalyearprojecta.databinding.ActivityViewReportBinding;
 import com.example.finalyearprojecta.utils.AESUtils;
 import com.example.finalyearprojecta.viewprofile.ProfileViewModel;
@@ -18,16 +17,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import androidx.activity.result.ActivityResultLauncher;
 
 public class View_Report extends AppCompatActivity {

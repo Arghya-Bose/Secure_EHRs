@@ -39,11 +39,6 @@ public class Assistant extends Fragment {
 
         progressBar = view.findViewById(R.id.progressBar);
         webView = view.findViewById(R.id.webView);
-        back = view.findViewById(R.id.btn_back_view);
-
-        back.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
 
         requireActivity().getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE,

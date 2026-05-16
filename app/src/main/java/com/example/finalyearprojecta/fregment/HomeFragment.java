@@ -218,9 +218,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             startActivity(intent);
 
         } else if (id == R.id.option_layout_4) {
-            Intent intent = new Intent(getContext(), WebViewActivity.class);
-            intent.putExtra("role", role);
-            startActivity(intent);
+            startActivity(new Intent(getContext(), RiminderNotification.class));
 
         }else if (id == R.id.historyCard) {
             Intent intent = new Intent(getContext(), MedicalHistoryActivity.class);

@@ -6,37 +6,69 @@
     android:orientation="vertical"
     android:background="#D6FCEC"
     tools:context=".notification.RiminderNotification">
-    android:padding="20dp">
 
-    <EditText
-        android:id="@+id/etMedicine"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:background="@drawable/search_background_1"
         android:layout_height="45dp"
-        android:padding="10dp"
-        android:hint="Enter Medicine Name"/>
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
 
-    <Button
-        android:id="@+id/btnPickTime"
+        <ImageButton
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/btn_back_view"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_arrow_back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Medicine Reminder"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#003A2C"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#0B8F5A"
-        android:text="Select Time"
-        android:layout_marginTop="20dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Time Selected"
-        android:layout_marginTop="10dp"/>
+        <EditText
+            android:id="@+id/etMedicine"
+            android:layout_width="match_parent"
+            android:background="@drawable/search_background_1"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            android:hint="Enter Medicine Name"/>
 
-    <Button
-        android:id="@+id/btnSetReminder"
-        android:backgroundTint="#0B8F5A"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set Reminder"
-        android:layout_marginTop="20dp"/>
+        <Button
+            android:id="@+id/btnPickTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#0B8F5A"
+            android:text="Select Time"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Time Selected"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btnSetReminder"
+            android:backgroundTint="#0B8F5A"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Reminder"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
 
 </LinearLayout>

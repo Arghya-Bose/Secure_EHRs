@@ -3,8 +3,8 @@
     <string name="view_your_report">View Report</string>
     <string name="upload_report">Upload Report</string>
     <string name="about_app">
-Cloud-Based Secure Electronic Health Record (EHR) System is a secure and intelligent healthcare management application designed to store and manage medical data safely in the cloud. The app provides role-based access for Patients, Doctors, and Lab Technicians to ensure controlled and authorized data usage.\n\nIt integrates Firebase Authentication, UID hash-based identification, biometric verification, and screenshot and screen-record restriction to maintain high-level data security and privacy.\n\nThe system also includes AI-powered medical report analysis using Machine Learning and TensorFlow Lite, along with an AI chatbot for healthcare assistance.
-</string>
+        SecureEHR is an advanced Android-based Electronic Health Record (EHR) application designed to provide a secure, intelligent, and user-friendly platform for managing medical data digitally. It allows users to store, access, and share health records anytime while ensuring strong privacy through a five-layer security framework, including biometric authentication, role-based access control, AES encryption, secure cloud storage with Firebase, and screenshot restriction. The app features an AI-powered lab report analysis system that uses OCR technology with Google ML Kit to scan reports, extract medical data, and automatically detect abnormal values based on predefined reference ranges, presenting them with clear explanations. Additional functionalities such as QR-based record sharing, prescription management, and medical history tracking make SecureEHR a comprehensive healthcare solution. Built using Java/Kotlin, Firebase, and TensorFlow Lite, the app aims to simplify healthcare management while maintaining high standards of data security and accessibility.
+    </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Strings used for fragments for navigation -->
