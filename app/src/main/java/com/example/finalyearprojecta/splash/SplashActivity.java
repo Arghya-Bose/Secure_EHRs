@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +30,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         progressBar = findViewById(R.id.progressBar);
         statusText = findViewById(R.id.statusText);

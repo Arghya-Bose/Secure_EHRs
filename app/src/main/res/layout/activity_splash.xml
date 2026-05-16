@@ -16,8 +16,8 @@
 
         <!-- Logo Card -->
         <androidx.cardview.widget.CardView
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             app:cardElevation="20dp"
             app:cardCornerRadius="35dp"
             android:outlineAmbientShadowColor="#80A8F5E5"
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SecureEHRs"
-            android:textSize="42sp"
+            android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="#003828"/>
 
@@ -45,8 +45,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADVANCED BIOMETRIC SECURITY"
-            android:textSize="16sp"
+            android:text="ADVANCED SECURITY SYSTEM"
+            android:textSize="14sp"
             android:letterSpacing="0.15"
             android:textColor="#2D4D42"
             android:layout_marginTop="8dp"/>
@@ -107,8 +107,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:tint="#00A76F"
-                    android:src="@android:drawable/ic_secure"/>
+                    android:src="@android:drawable/ic_secure"
+                    app:tint="#00A76F" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.example.finalyearprojecta.notes;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,6 +31,11 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         etDiagnosis = findViewById(R.id.etDiagnosis);
         etTreatment = findViewById(R.id.etTreatment);

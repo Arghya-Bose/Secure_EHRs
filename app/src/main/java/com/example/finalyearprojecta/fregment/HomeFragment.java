@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 import com.example.finalyearprojecta.*;
 import com.example.finalyearprojecta.appointment.AppointmentActivity;
 import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
-import com.example.finalyearprojecta.notes.AddNoteActivity;
 import com.example.finalyearprojecta.notes.DoctorNotesActivity;
+import com.example.finalyearprojecta.notification.RiminderNotification;
 import com.example.finalyearprojecta.ocr.LabReportActivity;
 import com.example.finalyearprojecta.prescription.Prescription;
 import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     DrawerLayout drawerLayout;
     ImageView cProfile, bg_icon, leftProfile;
     ImageButton btnMenu;
-    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn, NameText, doctorNotes;
+    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn, NameText, doctorNotes, reminder;
     Button scanImageBtn;
     LinearLayout option1, option2, option3, option4, medicalHistory, reportAnalysis, prescMng, mHistory;
     FirebaseAuth fAuth;
@@ -52,6 +52,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         currentUserId = fAuth.getUid();
 
+        requireActivity().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
+
         // INIT VIEWS
         drawerLayout = view.findViewById(R.id.drawerLayout);
         btnMenu = view.findViewById(R.id.btn_menu);
@@ -70,6 +75,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mHistory = view.findViewById(R.id.historyCard);
         aboutBtn = view.findViewById(R.id.btn_about);
         doctorNotes = view.findViewById(R.id.doctor_notes);
+        reminder = view.findViewById(R.id.m_reminder);
 
 
         bg_icon.setVisibility(View.GONE);
@@ -132,6 +138,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         prescMng.setOnClickListener(this);
         mHistory.setOnClickListener(this);
         doctorNotes.setOnClickListener(this);
+        reminder.setOnClickListener(this);
 
         db.collection("User").document(currentUserId)
                 .get()
@@ -159,6 +166,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         }else if (id == R.id.doctor_notes) {
             startActivity(new Intent(getContext(), DoctorNotesActivity.class));
+
+        }else if (id == R.id.m_reminder) {
+        startActivity(new Intent(getContext(), RiminderNotification.class));
 
         } else if (id == R.id.scan_btn) {
             startActivity(new Intent(getContext(), Scan_Image.class));

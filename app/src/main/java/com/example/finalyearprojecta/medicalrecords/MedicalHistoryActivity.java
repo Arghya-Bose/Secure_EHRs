@@ -2,6 +2,7 @@ package com.example.finalyearprojecta.medicalrecords;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,6 +37,11 @@ public class MedicalHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMedicalHistoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         binding.recyclerMedicalHistory.setLayoutManager(new LinearLayoutManager(this));
         auth = FirebaseAuth.getInstance();

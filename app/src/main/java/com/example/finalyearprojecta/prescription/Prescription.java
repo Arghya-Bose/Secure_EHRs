@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +48,11 @@ public class Prescription extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         // UI init
         uploadLayout = findViewById(R.id.uploadLayout);

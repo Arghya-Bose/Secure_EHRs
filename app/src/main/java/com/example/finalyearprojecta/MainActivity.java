@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav.setItemHorizontalTranslationEnabled(false);
 
         // Default fragment (Home)
         loadFragment(new HomeFragment());
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager()
                         .findFragmentById(R.id.frame_container);
 
-        // If current fragment is Home → ask exit confirmation
         if (currentFragment instanceof HomeFragment) {
 
             new AlertDialog.Builder(this)
@@ -79,10 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 
-            // Go to previous fragment
             getSupportFragmentManager().popBackStack();
 
-            // Optional: update bottom nav selection to home
             bottomNav.setSelectedItemId(R.id.home);
         }
     }

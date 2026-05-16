@@ -12,6 +12,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.*;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -83,6 +84,11 @@ public class Profile extends Fragment {
         binding.editProfile.setOnClickListener(v -> openEditBottomSheet());
         binding.viewProfileDetail.setOnClickListener(v -> openViewBottomSheet());
 
+
+        requireActivity().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         if (currentUserId == null) return;
 

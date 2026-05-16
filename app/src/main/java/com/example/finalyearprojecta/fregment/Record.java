@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -86,6 +87,11 @@ public class Record extends Fragment{
         saveBtn.setVisibility(View.GONE);
 
         db = FirebaseFirestore.getInstance();
+
+        requireActivity().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         initLauncher();
 

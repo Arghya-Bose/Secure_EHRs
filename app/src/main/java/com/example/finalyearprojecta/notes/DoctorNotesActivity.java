@@ -2,6 +2,7 @@ package com.example.finalyearprojecta.notes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -35,6 +36,11 @@ public class DoctorNotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_notes);
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         recyclerView = findViewById(R.id.recyclerViewNotes);
         fab = findViewById(R.id.fabAddNote);

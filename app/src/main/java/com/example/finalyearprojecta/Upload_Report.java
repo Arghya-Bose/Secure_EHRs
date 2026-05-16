@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 
 import com.example.finalyearprojecta.utils.AESUtils;
@@ -48,6 +49,10 @@ public class Upload_Report extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_report);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         // UI
         patientUniqueIdEditText = findViewById(R.id.patientUniqueIdEditText);

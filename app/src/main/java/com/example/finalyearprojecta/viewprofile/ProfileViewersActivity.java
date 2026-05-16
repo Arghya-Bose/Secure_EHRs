@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 import com.example.finalyearprojecta.databinding.ActivityProfileViewersBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,6 +24,10 @@ public class ProfileViewersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileViewersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+        );
 
         db = FirebaseFirestore.getInstance();
         patientUniqueId = getIntent().getStringExtra("uniqueId");
