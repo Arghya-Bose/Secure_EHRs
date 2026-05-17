@@ -1,9 +1,16 @@
 package com.example.finalyearprojecta.fregment;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -21,6 +28,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment implements View.OnClickListener {
     DrawerLayout drawerLayout;
     ImageView cProfile, bg_icon, leftProfile;
@@ -32,6 +42,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     FirebaseFirestore db;
     String currentUserId;
     View view;
+    private static final int PERMISSION_REQUEST_CODE = 101;
 
     public HomeFragment() {}
 
@@ -149,6 +160,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 });
 
 
+        requestAllPermissions();
         return view;
     }
 
@@ -171,7 +183,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         startActivity(new Intent(getContext(), RiminderNotification.class));
 
         } else if (id == R.id.scan_btn) {
-            startActivity(new Intent(getContext(), Scan_Image.class));
+            startActivity(new Intent(getContext(), LabReportActivity.class));
 
         } else if (id == R.id.btn_about) {
             BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
@@ -232,12 +244,79 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     // 🚪 LOGOUT
     private void logout() {
-        FirebaseAuth.getInstance().signOut();
 
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes", (dialog, which) -> {
 
-        requireActivity().finish();
+                    FirebaseAuth.getInstance().signOut();
+
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                    requireActivity().finish();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void requestAllPermissions() {
+
+        List<String> permissionsList = new ArrayList<>();
+
+        // Camera
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissionsList.add(Manifest.permission.CAMERA);
+        }
+
+        // Notification (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
+
+        // Storage
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(Manifest.permission.READ_MEDIA_IMAGES);
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+        }
+
+        if (!permissionsList.isEmpty()) {
+            requestPermissions(
+                    permissionsList.toArray(new String[0]),
+                    PERMISSION_REQUEST_CODE
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            Toast.makeText(requireContext(),
+                    "Permissions processed",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

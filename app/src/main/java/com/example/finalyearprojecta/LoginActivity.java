@@ -98,8 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     changeInProgress(false);
                 });
-
-        Toast.makeText(this, "Secure login successful", Toast.LENGTH_SHORT).show();
     }
 
     private void goToMainActivity() {

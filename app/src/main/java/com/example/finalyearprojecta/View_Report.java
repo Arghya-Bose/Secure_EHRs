@@ -2,11 +2,14 @@ package com.example.finalyearprojecta;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Toast;
 import com.example.finalyearprojecta.databinding.ActivityViewReportBinding;
 import com.example.finalyearprojecta.utils.AESUtils;
@@ -70,6 +73,13 @@ public class View_Report extends AppCompatActivity {
 
         // ===== LOAD USER ROLE =====
         loadUserRoleAndData();
+
+        binding.learnHow.setOnClickListener(V->{
+            Intent intent = new Intent(View_Report.this, Scan_Image.class);
+            startActivity(intent);
+        });
+
+
 
         // ===== DOCTOR / LAB SEARCH =====
         binding.fetchBtn.setOnClickListener(v -> {

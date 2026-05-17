@@ -34,13 +34,23 @@
 
     </LinearLayout>
 
-    <!-- ================= SCROLL AREA ================= -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select a Lab Report and Know detail....."
+            android:padding="10dp"
+            android:textSize="12sp"
+            android:letterSpacing="0.15"
+            android:textColor="#2D4D42"/>
+
+
         <ScrollView
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
@@ -61,8 +71,6 @@
             android:visibility="gone"/>
     </FrameLayout>
 
-
-    <!-- ================= BOTTOM BUTTON ================= -->
     <Button
         android:clickable="true"
         android:focusable="true"

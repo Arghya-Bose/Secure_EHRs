@@ -23,6 +23,9 @@
             android:paddingHorizontal="16dp">
 
             <ImageButton
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/btn_menu"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -35,6 +38,9 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/profile"
                 android:layout_width="35dp"
                 android:layout_height="35dp"

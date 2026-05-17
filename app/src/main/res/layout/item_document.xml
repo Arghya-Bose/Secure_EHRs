@@ -83,7 +83,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="CITY GENERAL LABS"
+                    android:text="Security System Active"
                     android:textSize="11sp"
                     android:textStyle="bold"
                     android:textColor="#2E7D5B"

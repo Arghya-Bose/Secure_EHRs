@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.*;
 
+import com.example.finalyearprojecta.ocr.LabReportActivity;
 import com.example.finalyearprojecta.utils.AESUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
@@ -27,7 +28,7 @@ public class Upload_Report extends AppCompatActivity {
     // ================= UI =================
     EditText patientUniqueIdEditText, detailEditText;
     TextView selectedFileText, uidTextView;
-    Button uploadBtn;
+    Button uploadBtn, scan;
     LinearLayout chooseBtn_1, chooseBtn_2;
     ImageButton btnBack;
     ProgressBar progressBar;
@@ -64,6 +65,12 @@ public class Upload_Report extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back_view);
         uidTextView = findViewById(R.id.uidText);
         progressBar = findViewById(R.id.progressBar);
+        scan = findViewById(R.id.scan_btn);
+
+        scan.setOnClickListener(v->{
+            Intent intent = new Intent(Upload_Report.this, LabReportActivity.class);
+            startActivity(intent);
+        });
 
         // 🔥 NEW UI
         categoryDropdown = findViewById(R.id.categoryDropdown);

@@ -118,19 +118,21 @@
                     android:background="@null"
                     android:paddingStart="8dp"/>
 
-                <ImageView
-                    android:id="@+id/scanQrBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_qr_scan"/>
 
                 <ImageView
                     android:id="@+id/fetchBtn"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/ic_search"
                     android:contentDescription="Search"
                     app:tint="#2A9D8F" />
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/scanQrBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_qr_scan"/>
             </LinearLayout>
 
             <LinearLayout
@@ -203,7 +205,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="OCTOBER 2023"
+                android:text="Recent Reports"
                 android:textColor="#5A8F76"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"/>
@@ -253,9 +255,11 @@
                     android:layout_marginTop="8dp"/>
 
                 <Button
+                    android:id="@+id/learn_how"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="Learn How"
+                    android:backgroundTint="#0B8F5A"
                     android:layout_marginTop="12dp"/>
             </LinearLayout>
         </LinearLayout>
