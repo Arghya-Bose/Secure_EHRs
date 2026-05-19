@@ -70,4 +70,6 @@ dependencies {
     implementation("com.google.mlkit:text-recognition:16.0.0-beta5")
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
+    implementation("com.google.code.gson:gson:2.10.1")
 }

@@ -3,11 +3,10 @@ package com.example.finalyearprojecta.notes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +27,7 @@ public class DoctorNotesActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     FloatingActionButton fab;
     List<Note> noteList;
-    Button btnBack;
+    ImageView btnBack;
     NoteAdapter adapter;
     FirebaseFirestore db;
 
