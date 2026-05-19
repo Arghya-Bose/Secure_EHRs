@@ -35,7 +35,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_profile_viewers)
+                        .setSmallIcon(R.drawable.logoprogress)
                         .setContentTitle("Medicine Reminder")
                         .setContentText("Time to take: " + medicineName)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)

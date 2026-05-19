@@ -15,34 +15,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.finalyearprojecta.R;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RiminderNotification extends AppCompatActivity {
-
     EditText etMedicine;
     Button btnPickTime, btnSetReminder;
     ImageButton back;
     TextView tvTime;
-
     int selectedHour = -1;
     int selectedMinute = -1;
-
     RecyclerView recyclerView;
     ArrayList<ReminderModel> reminderList;
     ReminderAdapter adapter;
-
-    // ✅ NEW: persistence helper
     ReminderPreferenceHelper prefHelper;
 
     private final ActivityResultLauncher<String> notificationPermissionLauncher =
@@ -65,7 +57,6 @@ public class RiminderNotification extends AppCompatActivity {
         back           = findViewById(R.id.btn_back_view);
         recyclerView   = findViewById(R.id.reminderRecycler);
 
-        // ✅ NEW: initialise helper and load saved reminders
         prefHelper   = new ReminderPreferenceHelper(this);
         reminderList = prefHelper.load();   // restores previous list on every open
 
@@ -78,14 +69,6 @@ public class RiminderNotification extends AppCompatActivity {
 
         btnPickTime.setOnClickListener(v -> openTimePicker());
         btnSetReminder.setOnClickListener(v -> setReminder());
-
-        btnSetReminder.setOnLongClickListener(v -> {
-            Intent testIntent = new Intent(this, ReminderReceiver.class);
-            testIntent.putExtra("medicine", "Paracetamol");
-            sendBroadcast(testIntent);
-            Toast.makeText(this, "Test notification sent", Toast.LENGTH_SHORT).show();
-            return true;
-        });
 
         back.setOnClickListener(v -> finish());
     }
@@ -165,7 +148,6 @@ public class RiminderNotification extends AppCompatActivity {
         String formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
         reminderList.add(new ReminderModel(medicine, formattedTime, requestCode));
 
-        // ✅ NEW: save to SharedPreferences immediately after adding
         prefHelper.save(reminderList);
 
         adapter.notifyItemInserted(reminderList.size() - 1);

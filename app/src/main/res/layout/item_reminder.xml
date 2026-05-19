@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="12dp"
-    android:background="#FFFFFF"
+    android:background="#D6FCEC"
     android:layout_marginBottom="10dp">
 
     <LinearLayout
@@ -30,5 +30,5 @@
         android:id="@+id/deleteReminder"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_qr_scan"/>
+        android:src="@drawable/delete_icon"/>
 </LinearLayout>
