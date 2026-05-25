@@ -10,13 +10,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
 import com.example.finalyearprojecta.R;
-
-// ✅ Replace MainActivity.class with whatever your app's launcher Activity is
 import com.example.finalyearprojecta.MainActivity;
 
 public class ReminderReceiver extends BroadcastReceiver {
@@ -36,7 +32,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
         createNotificationChannel(context);
 
-        // ✅ NEW: Intent that opens the app when the notification is tapped
+        // NEW: Intent that opens the app when the notification is tapped
         Intent openAppIntent = new Intent(context, MainActivity.class);
         openAppIntent.setFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK |       // required when starting from a BroadcastReceiver

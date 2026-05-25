@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.util.*;
 
 public class Prescription extends AppCompatActivity {
-    // UI
+
     ScrollView uploadLayout;
     LinearLayout viewLayout;
     Button btnUploadTab, btnViewTab, uploadBtn, fetchBtn, chooseFileBtn;
@@ -119,7 +119,6 @@ public class Prescription extends AppCompatActivity {
         fetchBtn.setOnClickListener(v -> fetchPrescriptions());
     }
 
-    // ================= FILE RESULT =================
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -130,7 +129,6 @@ public class Prescription extends AppCompatActivity {
         }
     }
 
-    // ================= UPLOAD =================
     private void uploadPrescription() {
 
         String uid = patientUid.getText().toString().trim();
@@ -195,7 +193,6 @@ public class Prescription extends AppCompatActivity {
         }
     }
 
-    // ================= FETCH =================
     private void fetchPrescriptions() {
 
         String uid = searchUid.getText().toString().trim();
@@ -242,7 +239,6 @@ public class Prescription extends AppCompatActivity {
                 });
     }
 
-    // ================= FILE NAME =================
     private String getFileName(Uri uri) {
 
         String result = "file";

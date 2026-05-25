@@ -7,13 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.finalyearprojecta.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +20,6 @@ public class AddNoteActivity extends AppCompatActivity {
     EditText etDiagnosis, etTreatment, etDate;
     Button btnSave;
     ImageButton btnBack;
-
     FirebaseFirestore db;
     FirebaseAuth auth;
 

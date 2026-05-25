@@ -4,19 +4,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.finalyearprojecta.R;
-
 import java.util.List;
 
 public class MedicalHistoryAdapter
         extends RecyclerView.Adapter<MedicalHistoryAdapter.ViewHolder> {
 
     List<MedicalRecord> list;
-
     public MedicalHistoryAdapter(List<MedicalRecord> list) {
         this.list = list;
     }

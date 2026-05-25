@@ -72,7 +72,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ViewHo
             list.remove(currentPosition);
             notifyItemRemoved(currentPosition);
 
-            // ✅ NEW: persist the updated list so delete also survives app restart
+            // NEW: persist the updated list so delete also survives app restart
             prefHelper.save(list);
         });
     }

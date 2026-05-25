@@ -38,8 +38,6 @@ public class View_Report extends AppCompatActivity {
     List<DocumentModel> allDocuments;
     List<DocumentModel> filteredDocuments;
     DocumentAdapter adapter;
-
-    // Dropdown selected values
     String selectedCategory = "All";
     String selectedSubCategory = "All";
 
@@ -58,7 +56,6 @@ public class View_Report extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         currentUserId = auth.getUid();
 
-        // ===== RECYCLER =====
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         allDocuments = new ArrayList<>();
         filteredDocuments = new ArrayList<>();
@@ -68,10 +65,8 @@ public class View_Report extends AppCompatActivity {
         binding.btnBackView.setOnClickListener(v -> finish());
         if (currentUserId == null) return;
 
-        // ===== CATEGORY DROPDOWN =====
         setupCategoryDropdown();
 
-        // ===== LOAD USER ROLE =====
         loadUserRoleAndData();
 
         binding.learnHow.setOnClickListener(V->{
@@ -80,8 +75,6 @@ public class View_Report extends AppCompatActivity {
         });
 
 
-
-        // ===== DOCTOR / LAB SEARCH =====
         binding.fetchBtn.setOnClickListener(v -> {
             String patientUniqueId = binding.patientUniqueIdEditText.getText().toString().trim();
 
@@ -118,7 +111,6 @@ public class View_Report extends AppCompatActivity {
         binding.subCategoryDropdown.setOnClickListener(v -> binding.subCategoryDropdown.showDropDown());
     }
 
-    // ================= CATEGORY & SUBCATEGORY DROPDOWN =================
     private void setupCategoryDropdown() {
         AutoCompleteTextView categoryDropdown = binding.categoryDropdown;
         AutoCompleteTextView subCategoryDropdown = binding.subCategoryDropdown;
@@ -175,7 +167,6 @@ public class View_Report extends AppCompatActivity {
         });
     }
 
-    // ================= FILTER DOCUMENTS =================
     private void filterDocuments() {
         filteredDocuments.clear();
 
@@ -199,7 +190,6 @@ public class View_Report extends AppCompatActivity {
         }
     }
 
-    // ================= LOAD ROLE =================
     private void loadUserRoleAndData() {
         db.collection("User")
                 .document(currentUserId)
@@ -231,7 +221,6 @@ public class View_Report extends AppCompatActivity {
                 );
     }
 
-    // ================= FETCH DOCUMENTS =================
     private void fetchDocuments(String patientUniqueId) {
         binding.viewProgress.setVisibility(View.VISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
@@ -279,7 +268,7 @@ public class View_Report extends AppCompatActivity {
 
                                         String fileType = doc.getString("fileType");
 
-                                        // 🔥 fallback for old data
+                                        // fallback for old data
                                         if (fileType == null) {
                                             if (decryptedFileName.toLowerCase().endsWith(".pdf")) {
                                                 fileType = "pdf";

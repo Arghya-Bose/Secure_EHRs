@@ -27,7 +27,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// --- Your OpenAI API interface ---
 interface OpenAiApi {
     @retrofit2.http.POST("v1/chat/completions")
     Call<JsonObject> sendMessage(@retrofit2.http.Body JsonObject body);

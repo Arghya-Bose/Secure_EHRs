@@ -84,7 +84,7 @@ public class CreateAccount extends AppCompatActivity {
             return;
         }
 
-        // 🔥 ROLE SELECTION
+        // ROLE SELECTION
         String role;
         if (rbDoctor.isChecked()) {
             role = "doctor";
@@ -101,7 +101,7 @@ public class CreateAccount extends AppCompatActivity {
 
                     FirebaseUser user = fAuth.getCurrentUser();
 
-                    // ✅ Generate Unique ID here
+                    // Generate Unique ID here
                     String uniqueId = UUID.randomUUID().toString();
 
                     Map<String, Object> userInfo = new HashMap<>();

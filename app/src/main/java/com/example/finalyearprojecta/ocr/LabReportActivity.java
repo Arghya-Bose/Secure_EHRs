@@ -11,17 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import com.example.finalyearprojecta.R;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -31,10 +27,8 @@ public class LabReportActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private Button btnUpload;
-
     private LinearLayout resultContainer;
     private static final int PICK_IMAGE = 100;
-
     ImageView btnBack;
 
     @Override
@@ -96,7 +90,7 @@ public class LabReportActivity extends AppCompatActivity {
         }
     }
 
-    // ================= SMART PARSER =================
+    // SMART PARSER
 
     private void processReport(String text) {
 
@@ -104,7 +98,7 @@ public class LabReportActivity extends AppCompatActivity {
 
         Map<String, TestItem> testMap = new HashMap<>();
 
-// ================= CBC =================
+// CBC
         testMap.put("Hemoglobin", new TestItem(13, 17));
         testMap.put("RBC", new TestItem(4.5, 5.9));
         testMap.put("WBC", new TestItem(4000, 11000));
@@ -115,14 +109,12 @@ public class LabReportActivity extends AppCompatActivity {
         testMap.put("MCHC", new TestItem(32, 36));
         testMap.put("ESR", new TestItem(0, 20));
 
-// ================= Diabetes =================
         testMap.put("Glucose", new TestItem(70, 140));
         testMap.put("FBS", new TestItem(70, 99));
         testMap.put("PPBS", new TestItem(70, 140));
         testMap.put("HbA1c", new TestItem(4, 5.6));
         testMap.put("Random Blood Sugar", new TestItem(70, 140));
 
-// ================= Lipid Profile =================
         testMap.put("Cholesterol", new TestItem(125, 200));
         testMap.put("Total Cholesterol", new TestItem(125, 200));
         testMap.put("HDL", new TestItem(40, 60));
@@ -130,13 +122,11 @@ public class LabReportActivity extends AppCompatActivity {
         testMap.put("Triglycerides", new TestItem(0, 150));
         testMap.put("VLDL", new TestItem(5, 40));
 
-// ================= Kidney Function =================
         testMap.put("Creatinine", new TestItem(0.6, 1.3));
         testMap.put("Urea", new TestItem(15, 40));
         testMap.put("Uric Acid", new TestItem(3.5, 7.2));
         testMap.put("BUN", new TestItem(7, 20));
 
-// ================= Liver Function =================
         testMap.put("SGPT", new TestItem(7, 56));
         testMap.put("ALT", new TestItem(7, 56));
         testMap.put("SGOT", new TestItem(10, 40));
@@ -145,23 +135,19 @@ public class LabReportActivity extends AppCompatActivity {
         testMap.put("ALP", new TestItem(44, 147));
         testMap.put("Albumin", new TestItem(3.5, 5.0));
 
-// ================= Thyroid =================
         testMap.put("TSH", new TestItem(0.4, 4.0));
         testMap.put("T3", new TestItem(80, 200));
         testMap.put("T4", new TestItem(5, 12));
 
-// ================= Electrolytes =================
         testMap.put("Sodium", new TestItem(135, 145));
         testMap.put("Potassium", new TestItem(3.5, 5.0));
         testMap.put("Chloride", new TestItem(96, 106));
         testMap.put("Calcium", new TestItem(8.6, 10.2));
         testMap.put("Magnesium", new TestItem(1.7, 2.2));
 
-// ================= Vitamins =================
         testMap.put("Vitamin D", new TestItem(20, 50));
         testMap.put("Vitamin B12", new TestItem(200, 900));
 
-// ================= Cardiac =================
         testMap.put("Troponin", new TestItem(0, 0.04));
         testMap.put("CK-MB", new TestItem(0, 5));
         testMap.put("CRP", new TestItem(0, 3));
@@ -169,7 +155,6 @@ public class LabReportActivity extends AppCompatActivity {
 
         Map<String, TestInfo> infoMap = new HashMap<>();
 
-// ================= CBC =================
         infoMap.put("Hemoglobin", new TestInfo(
                 "Hemoglobin (Hb)",
                 "Protein in red blood cells that carries oxygen throughout the body."
@@ -215,7 +200,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Indicates inflammation in the body."
         ));
 
-// ================= Diabetes =================
         infoMap.put("Glucose", new TestInfo(
                 "Blood Glucose",
                 "Measures sugar level in blood."
@@ -241,7 +225,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Blood sugar measured at any time of the day."
         ));
 
-// ================= Lipid Profile =================
         infoMap.put("Cholesterol", new TestInfo(
                 "Total Cholesterol",
                 "Total amount of cholesterol in blood."
@@ -272,7 +255,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Carries triglycerides in blood."
         ));
 
-// ================= Kidney Function =================
         infoMap.put("Creatinine", new TestInfo(
                 "Serum Creatinine",
                 "Waste product that indicates kidney function."
@@ -293,7 +275,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Measures nitrogen level in blood to assess kidney health."
         ));
 
-// ================= Liver Function =================
         infoMap.put("SGPT", new TestInfo(
                 "Serum Glutamic Pyruvic Transaminase",
                 "Liver enzyme. High value may indicate liver damage."
@@ -329,7 +310,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Protein made by liver that maintains fluid balance."
         ));
 
-// ================= Thyroid =================
         infoMap.put("TSH", new TestInfo(
                 "Thyroid Stimulating Hormone",
                 "Controls thyroid gland activity."
@@ -345,7 +325,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Main hormone produced by thyroid gland."
         ));
 
-// ================= Electrolytes =================
         infoMap.put("Sodium", new TestInfo(
                 "Sodium",
                 "Electrolyte controlling fluid balance and nerves."
@@ -371,7 +350,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Supports muscle, nerve, and heart function."
         ));
 
-// ================= Vitamins =================
         infoMap.put("Vitamin D", new TestInfo(
                 "Vitamin D",
                 "Helps absorb calcium and supports immunity."
@@ -382,7 +360,6 @@ public class LabReportActivity extends AppCompatActivity {
                 "Important for nerve function and red blood cell formation."
         ));
 
-// ================= Cardiac =================
         infoMap.put("Troponin", new TestInfo(
                 "Cardiac Troponin",
                 "Protein released during heart muscle damage."
@@ -411,7 +388,6 @@ public class LabReportActivity extends AppCompatActivity {
         }
     }
 
-    // ================= REGEX EXTRACTION =================
 
     private double extractValue(String text, String keyword) {
         // (?i) -> case-insensitive
@@ -428,7 +404,6 @@ public class LabReportActivity extends AppCompatActivity {
         return -1;
     }
 
-    // ================= UI CARD DISPLAY =================
 
     private void showCard(String name, double value, TestItem range, TestInfo info) {
 
@@ -530,7 +505,6 @@ public class LabReportActivity extends AppCompatActivity {
         resultContainer.addView(card);
     }
 
-    // ================= RANGE MODEL =================
 
     static class TestItem {
         double min, max;

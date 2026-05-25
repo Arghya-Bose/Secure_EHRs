@@ -9,11 +9,9 @@ public class DocumentModel {
     String feedback;
     String uploadDate;
     String fileType;
-
     private String category;
     private String subCategory;
 
-    // 🔥 FULL CONSTRUCTOR (NEW)
     public DocumentModel(String fileName, String uploadedBy, String role,
                          String fileData, String feedback, String uploadDate,
                          String fileType,
@@ -30,7 +28,6 @@ public class DocumentModel {
         this.subCategory = subCategory;
     }
 
-    // 🔥 OLD CONSTRUCTOR (for your existing report code)
     public DocumentModel(String fileName, String uploadedBy, String role,
                          String fileData, String feedback, String uploadDate,
                          String category, String subCategory) {
@@ -48,7 +45,6 @@ public class DocumentModel {
         this.fileType = "pdf";
     }
 
-    // ================= GETTERS =================
 
     public String getFileName() { return fileName; }
 

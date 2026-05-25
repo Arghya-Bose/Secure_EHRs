@@ -68,7 +68,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 //        holder.categoryText.setText("Category: " + doc.getCategory());
 //        holder.subCategoryText.setText("Sub Category: "+doc.getSubCategory());
 
-        // ===== OPEN PDF =====
+        // OPEN PDF
         holder.itemView.setOnClickListener(v -> openFile(v.getContext(), doc));
     }
 
@@ -97,10 +97,10 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            // 🔥 GET FILE TYPE
+            // GET FILE TYPE
             String fileType = doc.getFileType();
 
-            // 🔥 Fallback if null (old data)
+            // Fallback if null (old data)
             if (fileType == null) {
                 if (fileName.toLowerCase().endsWith(".pdf")) {
                     fileType = "pdf";
@@ -109,7 +109,7 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
                 }
             }
 
-            // 🔥 SET CORRECT MIME TYPE
+            // SET CORRECT MIME TYPE
             if (fileType.equals("pdf")) {
                 intent.setDataAndType(uri, "application/pdf");
             } else if (fileType.equals("image")) {
@@ -131,7 +131,6 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
         return documents.size();
     }
 
-    // ================== FILTERING ==================
     public void filter(String category, String subCategory) {
         documents.clear();
 
@@ -147,7 +146,6 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    // ================== VIEW HOLDER ==================
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView fileNameText, uploadedByText, feedbackText, dateText, categoryText, subCategoryText;

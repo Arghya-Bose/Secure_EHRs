@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setItemHorizontalTranslationEnabled(false);
 
-        // Default fragment (Home)
         loadFragment(new HomeFragment());
 
         bottomNav.setOnItemSelectedListener(item -> {

@@ -25,22 +25,16 @@ import java.util.Map;
 
 public class Upload_Report extends AppCompatActivity {
 
-    // ================= UI =================
     EditText patientUniqueIdEditText, detailEditText;
     TextView selectedFileText, uidTextView;
     Button uploadBtn, scan;
     LinearLayout chooseBtn_1, chooseBtn_2;
     ImageButton btnBack;
     ProgressBar progressBar;
-    // 🔥 NEW
     AutoCompleteTextView categoryDropdown, subCategoryDropdown;
     String selectedCategory = "";
     String selectedSubCategory = "";
-
-    // ================= DATA =================
     Uri fileUri;
-
-    // ================= FIREBASE =================
     FirebaseAuth auth;
     FirebaseFirestore db;
     String role;
@@ -72,7 +66,6 @@ public class Upload_Report extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 🔥 NEW UI
         categoryDropdown = findViewById(R.id.categoryDropdown);
         subCategoryDropdown = findViewById(R.id.subCategoryDropdown);
 
@@ -90,7 +83,6 @@ public class Upload_Report extends AppCompatActivity {
             uidTextView.setVisibility(View.GONE);
         }
 
-        // ================= CATEGORY SETUP =================
         String[] categories = {
                 "Lab Tests",
                 "Imaging",
@@ -155,7 +147,6 @@ public class Upload_Report extends AppCompatActivity {
             selectedSubCategory = parent.getItemAtPosition(position).toString();
         });
 
-        // ================= BUTTONS =================
         chooseBtn_1.setOnClickListener(v -> chooseFile());
         chooseBtn_2.setOnClickListener(v -> chooseFile());
         uploadBtn.setOnClickListener(v -> startUpload());
@@ -164,7 +155,6 @@ public class Upload_Report extends AppCompatActivity {
         changeInProgress(false);
     }
 
-    // ================= FILE PICKER =================
     private void chooseFile() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -186,7 +176,6 @@ public class Upload_Report extends AppCompatActivity {
         }
     }
 
-    // ================= START UPLOAD =================
     private void startUpload() {
 
         if (fileUri == null) {
@@ -312,7 +301,6 @@ public class Upload_Report extends AppCompatActivity {
         }
     }
 
-    // ================= FILE NAME =================
     private String getFileName(Uri uri) {
 
         String result = "document.pdf";
@@ -340,7 +328,6 @@ public class Upload_Report extends AppCompatActivity {
         return result;
     }
 
-    // ================= PROGRESS =================
     private void changeInProgress(boolean inProgress) {
         progressBar.setVisibility(inProgress ? View.VISIBLE : View.GONE);
         uploadBtn.setVisibility(inProgress ? View.GONE : View.VISIBLE);

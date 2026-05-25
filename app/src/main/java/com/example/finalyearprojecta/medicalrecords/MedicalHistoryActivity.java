@@ -97,7 +97,7 @@ public class MedicalHistoryActivity extends AppCompatActivity {
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show());
     }
 
-    // ================= FETCH =================
+    // FETCH
 
     private void fetchMedicalHistory() {
 
@@ -123,7 +123,7 @@ public class MedicalHistoryActivity extends AppCompatActivity {
                 });
     }
 
-    // ================= ADD BOTTOM SHEET =================
+    // ADD BOTTOM SHEET
 
     private void openAddBottomSheet() {
 
