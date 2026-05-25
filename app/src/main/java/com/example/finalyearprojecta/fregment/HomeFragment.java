@@ -8,21 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import com.example.finalyearprojecta.*;
-import com.example.finalyearprojecta.appointment.AppointmentActivity;
 import com.example.finalyearprojecta.medicalrecords.MedicalHistoryActivity;
 import com.example.finalyearprojecta.notes.DoctorNotesActivity;
 import com.example.finalyearprojecta.notification.RiminderNotification;
 import com.example.finalyearprojecta.ocr.LabReportActivity;
 import com.example.finalyearprojecta.prescription.Prescription;
 import com.example.finalyearprojecta.viewprofile.ProfileViewersActivity;
-import com.example.finalyearprojecta.webv.WebViewActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +32,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     DrawerLayout drawerLayout;
     ImageView cProfile, bg_icon, leftProfile;
     ImageButton btnMenu;
-    TextView appointment, logoutBtn, nameText, viewProfile, aboutBtn, NameText, doctorNotes, reminder;
+    TextView logoutBtn, nameText, viewProfile, aboutBtn, NameText, doctorNotes, reminder;
     Button scanImageBtn;
     LinearLayout option1, option2, option3, option4, medicalHistory, reportAnalysis, prescMng, mHistory;
     FirebaseAuth fAuth;
@@ -71,7 +68,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // INIT VIEWS
         drawerLayout = view.findViewById(R.id.drawerLayout);
         btnMenu = view.findViewById(R.id.btn_menu);
-        appointment = view.findViewById(R.id.appointment);
         scanImageBtn = view.findViewById(R.id.scan_btn);
         logoutBtn = view.findViewById(R.id.btn_loout);
         cProfile = view.findViewById(R.id.profile);
@@ -91,10 +87,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         bg_icon.setVisibility(View.GONE);
 
-        // 🔹 Get role from Activity
+        // Get role from Activity
         String role = getActivity().getIntent().getStringExtra("role");
 
-        // 🔹 Firestore
+        //Firestore
         db.collection("User").document(currentUserId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -133,7 +129,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         // Click Listeners
         btnMenu.setOnClickListener(this);
-        appointment.setOnClickListener(this);
         scanImageBtn.setOnClickListener(this);
         aboutBtn.setOnClickListener(this);
         logoutBtn.setOnClickListener(this);
@@ -172,9 +167,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         if (id == R.id.btn_menu) {
             drawerLayout.openDrawer(GravityCompat.START);
-
-        } else if (id == R.id.appointment) {
-            startActivity(new Intent(getContext(), AppointmentActivity.class));
 
         }else if (id == R.id.doctor_notes) {
             startActivity(new Intent(getContext(), DoctorNotesActivity.class));
@@ -242,7 +234,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    // 🚪 LOGOUT
+    //LOGOUT
     private void logout() {
 
         new AlertDialog.Builder(requireContext())

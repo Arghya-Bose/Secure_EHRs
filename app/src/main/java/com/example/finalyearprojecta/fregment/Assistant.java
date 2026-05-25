@@ -11,11 +11,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import com.example.finalyearprojecta.R;
 
 public class Assistant extends Fragment {
@@ -23,9 +21,7 @@ public class Assistant extends Fragment {
     private WebView webView;
     private ProgressBar progressBar;
     private ImageButton back;
-
     private final String URL = "https://healthchatehr.netlify.app/";
-
     public void AssistantFragment() {
         // Required empty public constructor
     }

@@ -140,12 +140,11 @@ public class Profile extends Fragment {
         );
 
         fetchProfileImage();
-
         binding.logoutProfile.setOnClickListener(V -> logout());
 
     }
 
-    // ================= BIOMETRIC =================
+    // BIOMETRIC
     private void setupBiometric() {
 
         Executor executor = ContextCompat.getMainExecutor(requireContext());
@@ -301,7 +300,7 @@ public class Profile extends Fragment {
         dialog.show();
     }
 
-    // ================= IMAGE =================
+    //IMAGE
     private String imageToBase64(Uri uri) {
         try {
             InputStream inputStream =

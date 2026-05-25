@@ -7,49 +7,31 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.finalyearprojecta.MainActivity;
 import com.example.finalyearprojecta.OCRHistoryActivity;
 import com.example.finalyearprojecta.R;
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Patterns;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,12 +42,9 @@ public class Record extends Fragment{
     MaterialButton ocrRecord;
     ImageView saveBtn;
     TextView all_scaned_text;
-
     FirebaseFirestore db;
-
     ArrayList<DocumentSnapshot> list = new ArrayList<>();
     int currentIndex = 0;
-
     ActivityResultLauncher<Intent> cameraLauncher;
     ActivityResultLauncher<Intent> galleryLauncher;
 
@@ -104,16 +83,13 @@ public class Record extends Fragment{
                             OCRHistoryActivity.class); // target activity
 
             startActivity(intent);
-
             fetchData();
-
-
         });
 
         return view;
     }
 
-    //====================== PICK ======================
+    // PICK
 
     private void chooseImage() {
 
@@ -186,9 +162,7 @@ public class Record extends Fragment{
                         });
     }
 
-    //====================== OCR ======================
-
-    // inside runOCR()
+    // OCR
 
     private void runOCR(Bitmap bitmap) {
 
@@ -216,7 +190,7 @@ public class Record extends Fragment{
                 });
     }
 
-    //====================== EXTRACT ======================
+    // EXTRACT
 
     private String findName(String txt) {
 
@@ -245,7 +219,7 @@ public class Record extends Fragment{
         return "Not Found";
     }
 
-    //====================== SAVE FIRESTORE ======================
+    // SAVE FIRESTORE
 
     private void saveFirestore() {
 
@@ -285,7 +259,7 @@ public class Record extends Fragment{
                                 Toast.LENGTH_SHORT).show());
     }
 
-    //====================== FETCH ONE BY ONE ======================
+    // FETCH ONE BY ONE
 
     private void fetchData() {
 
