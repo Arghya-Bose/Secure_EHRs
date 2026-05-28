@@ -21,7 +21,7 @@ public class Assistant extends Fragment {
     private WebView webView;
     private ProgressBar progressBar;
     private ImageButton back;
-    private final String URL = "https://healthchatehr.netlify.app/";
+    private final String URL = "https://inquisitive-mochi-f41456.netlify.app/";
     public void AssistantFragment() {
         // Required empty public constructor
     }
